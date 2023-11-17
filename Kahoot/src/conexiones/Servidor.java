@@ -52,9 +52,9 @@ public class Servidor {
                                 id = generarIdAleatorio();
                             } while(salas.containsKey(id));
                             salas.put(id, p);
-                            outSocket.writeBytes(id);
-                            outSocket.flush();
                             outSocket.writeBytes("Has creado la sala.\n");
+                            outSocket.flush();
+                            outSocket.writeBytes(id);
                             outSocket.flush();
                         }else{
                             outSocket.writeBytes("Ya posees una sala.\n");
