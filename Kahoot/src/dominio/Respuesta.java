@@ -12,6 +12,11 @@ public class Respuesta {
         this.tiempo=Calendar.getInstance();
     }
 
+    public Respuesta(){
+        this.respuesta="";
+        this.tiempo=Calendar.getInstance();
+    }
+
     public String getRespuesta(){
         return this.respuesta;
     }
