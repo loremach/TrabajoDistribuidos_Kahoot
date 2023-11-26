@@ -1,11 +1,13 @@
 package dominio;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Sala {
+public class Sala implements Serializable{
     private String idSala;
     private List<Pregunta> preguntas = new ArrayList<>();
+    private static final long serialVersionUID = 111L;
 
     public Sala(String idSala){
         this.idSala = idSala;
@@ -16,7 +18,7 @@ public class Sala {
     }
 
     public List<Pregunta> getPreguntas(){
-        return this.getPreguntas();
+        return this.preguntas;
     }
 
     public String getIdSala(){
