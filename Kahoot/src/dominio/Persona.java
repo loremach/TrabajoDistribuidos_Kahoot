@@ -7,10 +7,12 @@ public class Persona implements Serializable{
 	private static final long serialVersionUID = 111L;
 	private String ip;
 	private int puerto;
+	private String alias;
 	
 	public Persona(String ip, int puerto) {
 		this.ip=ip;
 		this.puerto=puerto;
+		this.alias = "";
 	}
 
 	public String getIp() {
@@ -19,6 +21,14 @@ public class Persona implements Serializable{
 
 	public int getPuerto() {
 		return puerto;
+	}
+	
+	public String getAlias() {
+		return this.alias;
+	}
+	
+	public void setAlias(String alias) {
+		this.alias=alias;
 	}
 	
 	@Override
