@@ -1,53 +1,46 @@
 package Interfaces;
 
-import java.awt.EventQueue;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
 
-import javax.swing.JFrame;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextPane;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
 import conexiones.Cliente2;
 import dominio.Persona;
 
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JTextPane;
-import javax.swing.JLabel;
-import java.awt.Font;
-import java.awt.Color;
-import javax.swing.JButton;
-import java.awt.GridLayout;
-
-public class VentanaClienteJugador extends JFrame {
+public class ClienteJugador extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
 	private Cliente2 cliente;
 	private Persona persona;
-
+	private VentanaPrincipal ventanaPrincipal;
 
 	/**
-	 * Create the frame.
+	 * Create the panel.
 	 */
-	public VentanaClienteJugador(Cliente2 cliente, Persona persona) {
-		this.cliente=cliente;
-		this.persona=persona;
+	public ClienteJugador(Cliente2 cliente, Persona persona, VentanaPrincipal ventana) {
+		this.cliente = cliente;
+		this.persona = persona;
+		this.ventanaPrincipal = ventana;
 		this.cliente.jugarEnSala(persona);
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(700, 80, 600, 800);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		setContentPane(contentPane);
+		this.setBounds(700, 80, 600, 800);
+		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
 		JPanel panelKahoot = new JPanel();
 		
 		JPanel panelPreguntaPuntos = new JPanel();
 		
 		JPanel PanelBotonesRespuesta = new JPanel();
-		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		GroupLayout gl_contentPane = new GroupLayout(this);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addComponent(panelKahoot, GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
@@ -119,10 +112,7 @@ public class VentanaClienteJugador extends JFrame {
 					.addContainerGap())
 		);
 		panelPreguntaPuntos.setLayout(gl_panelPreguntaPuntos);
-		contentPane.setLayout(gl_contentPane);
+		this.setLayout(gl_contentPane);
 	}
-	
-	public void mostrarInterfaz(){
-        this.setVisible(true);
-    }
+
 }

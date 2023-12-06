@@ -1,46 +1,39 @@
 package Interfaces;
 
-import java.awt.EventQueue;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.JFrame;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
 import conexiones.Cliente2;
 import dominio.Persona;
 
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
-import java.awt.Color;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-public class VentanaClienteEntrarSala extends JFrame {
+public class ClienteEntrarSala extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
 	private JTextField textIdSala;
 	private JTextField textNombreJugador;
 	private Cliente2 cliente;
-
+	private VentanaPrincipal ventanaPrincipal;
 	/**
-	 * Create the frame.
+	 * Create the panel.
 	 */
-	public VentanaClienteEntrarSala(Cliente2 cliente) {
+	public ClienteEntrarSala(Cliente2 cliente, VentanaPrincipal ventana) {
 		this.cliente = cliente;
+		this.ventanaPrincipal = ventana;
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(700, 80, 600, 800);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		setContentPane(contentPane);
+		this.setBounds(700, 80, 600, 800);
+		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
 		JPanel panelKahoot = new JPanel();
 		
@@ -75,7 +68,7 @@ public class VentanaClienteEntrarSala extends JFrame {
 		panel_1.setLayout(gl_panel_1);
 		
 		JPanel panelGestionarEntrada = new JPanel();
-		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		GroupLayout gl_contentPane = new GroupLayout(this);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
@@ -134,8 +127,8 @@ public class VentanaClienteEntrarSala extends JFrame {
 					if(cliente.getSalas().containsKey(idSala)){
 		                Persona p = cliente.getSalas().get(idSala);
 		                p.setAlias(alias);
-		                VentanaClienteJugador ventanaNueva = new VentanaClienteJugador(cliente, p);
-		                ventanaNueva.setVisible(true);
+		                //VentanaClienteJugador ventanaNueva = new VentanaClienteJugador(cliente, p);
+		                //ventanaNueva.setVisible(true);
 		            }else{
 		            	lblInformarError.setText("La sala no existe");
 		            }
@@ -153,24 +146,21 @@ public class VentanaClienteEntrarSala extends JFrame {
 			gl_panelGestionarEntrada.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelGestionarEntrada.createSequentialGroup()
 					.addContainerGap(102, Short.MAX_VALUE)
-					.addGroup(gl_panelGestionarEntrada.createParallelGroup(Alignment.LEADING)
-						.addGroup(Alignment.TRAILING, gl_panelGestionarEntrada.createSequentialGroup()
-							.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 176, GroupLayout.PREFERRED_SIZE)
-							.addGap(195))
-						.addGroup(Alignment.TRAILING, gl_panelGestionarEntrada.createSequentialGroup()
-							.addComponent(lblInformarError, GroupLayout.PREFERRED_SIZE, 371, GroupLayout.PREFERRED_SIZE)
-							.addGap(95))))
+					.addComponent(lblInformarError, GroupLayout.PREFERRED_SIZE, 371, GroupLayout.PREFERRED_SIZE)
+					.addGap(95))
+				.addGroup(gl_panelGestionarEntrada.createSequentialGroup()
+					.addGap(195)
+					.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 176, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(197, Short.MAX_VALUE))
 		);
-		
-		
 		gl_panelGestionarEntrada.setVerticalGroup(
-			gl_panelGestionarEntrada.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_panelGestionarEntrada.createSequentialGroup()
+			gl_panelGestionarEntrada.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, gl_panelGestionarEntrada.createSequentialGroup()
 					.addGap(64)
 					.addComponent(lblInformarError, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
+					.addGap(80)
 					.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
-					.addGap(63))
+					.addContainerGap(132, Short.MAX_VALUE))
 		);
 		panelGestionarEntrada.setLayout(gl_panelGestionarEntrada);
 		
@@ -199,10 +189,7 @@ public class VentanaClienteEntrarSala extends JFrame {
 					.addContainerGap(24, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
-		contentPane.setLayout(gl_contentPane);
+		this.setLayout(gl_contentPane);
 	}
-	
-	public void mostrarInterfaz(){
-        this.setVisible(true);
-    }
+
 }

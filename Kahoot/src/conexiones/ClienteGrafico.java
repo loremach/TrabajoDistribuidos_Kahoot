@@ -10,7 +10,7 @@ import java.util.List;
 
 import javax.swing.*;
 
-import Interfaces.VentanaInicio;
+import Interfaces.VentanaPrincipal;
 import dominio.Persona;
 import dominio.Pregunta;
 import dominio.Sala;
@@ -25,7 +25,8 @@ public class ClienteGrafico extends JFrame{
     public static void main(String [] args){
 //        VentanaInicio pantalla=new VentanaInicio(); 
 //        pantalla.mostrarInterfaz();
-        
-        
+    	Cliente2 cliente = new Cliente2();
+    	VentanaPrincipal ventana= new VentanaPrincipal(cliente);
+        ventana.empezar();
     }
 }

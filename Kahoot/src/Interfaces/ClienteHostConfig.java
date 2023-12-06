@@ -1,47 +1,33 @@
 package Interfaces;
 
-import java.awt.EventQueue;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.TreeMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
-import javax.swing.JFrame;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
-import conexiones.AtenderCliente;
 import conexiones.Cliente2;
 import dominio.Persona;
 import dominio.Pregunta;
-import dominio.Sala;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
-import java.awt.Font;
-import javax.swing.JTextField;
-import javax.swing.JTextArea;
-import javax.swing.JButton;
-import java.awt.Color;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.awt.event.ActionEvent;
-
-public class VentanaClienteHost extends JFrame {
+public class ClienteHostConfig extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-
+	private Cliente2 cliente;
+	private VentanaPrincipal ventanaPrincipal;
     private List<Pregunta> preguntasSala = new ArrayList<>();
 
     private static HashMap<String, Persona> salas;
@@ -50,42 +36,44 @@ public class VentanaClienteHost extends JFrame {
     private JTextField textRespuestaFalsa1;
     private JTextField textRespuestaFalsa2;
     private JTextField textRespuestaFalsa3;
-    
-    private Cliente2 cliente;
-
 	/**
-	 * Create the frame.
+	 * Create the panel.
 	 */
-	public VentanaClienteHost(Cliente2 cliente) {
-		this.cliente=cliente;
+	public ClienteHostConfig(Cliente2 cliente, VentanaPrincipal ventana) {
+		this.cliente = cliente;
+		this.ventanaPrincipal = ventana;
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(700, 80, 600, 800);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		setContentPane(contentPane);
+		this.setBounds(700, 80, 600, 800);
+		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
 		JPanel panel = new JPanel();
 		
 		JPanel panel_1 = new JPanel();
 		
 		JPanel panel_2 = new JPanel();
-		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+
+		GroupLayout gl_contentPane = new GroupLayout(this);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addComponent(panel, GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
-				.addComponent(panel_1, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
-				.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(10)
+							.addComponent(panel_1, 0, 0, Short.MAX_VALUE))
+						.addComponent(panel_2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addContainerGap(333, Short.MAX_VALUE))
 		);
 		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-					.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+					.addGap(18)
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 456, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE))
+					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
 		);
 		
 		JLabel lblNewLabel = new JLabel("Kahoot!");
@@ -184,10 +172,7 @@ public class VentanaClienteHost extends JFrame {
 					.addComponent(textRespuestaFalsa3, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
-		panel.setLayout(gl_panel);
-		contentPane.setLayout(gl_contentPane);
-		
-		
+		panel.setLayout(gl_panel);		
 		
 		JButton btnAnadirPregunta = new JButton("Añadir pregunta");
 		btnAnadirPregunta.addActionListener(new ActionListener() {
@@ -208,8 +193,10 @@ public class VentanaClienteHost extends JFrame {
 		JButton btnEmpezar = new JButton("Empezar");
 		btnEmpezar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VentanaClienteHostJuegoEmpezado empiezaJuego = new VentanaClienteHostJuegoEmpezado(cliente);
-				empiezaJuego.mostrarInterfaz();
+				//cambiar
+//				VentanaClienteHostJuegoEmpezado empiezaJuego = new VentanaClienteHostJuegoEmpezado(cliente);
+//				empiezaJuego.mostrarInterfaz();
+				cambiarVentana(cliente);
 			}
 		});
 		btnEmpezar.setFont(new Font("Kristen ITC", Font.BOLD, 16));
@@ -233,11 +220,13 @@ public class VentanaClienteHost extends JFrame {
 					.addContainerGap(39, Short.MAX_VALUE))
 		);
 		panel_2.setLayout(gl_panel_2);
+		
+		this.setLayout(gl_contentPane);
 	}
 	
-	public void mostrarInterfaz(){
-        this.setVisible(true);
-    }
-	
+	public void cambiarVentana(Cliente2 aux) {
+		this.cliente = aux;
+		ventanaPrincipal.cambiarAClienteHostJugando();
+	}
 
 }

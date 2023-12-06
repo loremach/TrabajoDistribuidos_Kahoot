@@ -1,83 +1,46 @@
 package Interfaces;
 
-import java.awt.EventQueue;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.JFrame;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.EmptyBorder;
 
 import conexiones.Cliente2;
-import dominio.Persona;
-import dominio.Pregunta;
-import dominio.Sala;
 
-import javax.swing.JLabel;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.awt.event.ActionEvent;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.Font;
-import java.awt.Color;
-
-public class VentanaInicio extends JFrame {
+public class Inicio extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+	private Cliente2 cliente;
+	private VentanaPrincipal ventanaPrincipal;
 	
-	private static Cliente2 cliente;
-
-	public VentanaInicio(Cliente2 cliente) {
+	/**
+	 * Create the panel.
+	 */
+	public Inicio(Cliente2 cliente, VentanaPrincipal ventana) {
+		this.cliente = cliente;
+		this.ventanaPrincipal = ventana;
 		
-		this.cliente=cliente;
-		setResizable(false);
-		setTitle("Kahoot!");
-		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(700, 80, 600, 800);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		setContentPane(contentPane);
+		this.setBounds(700, 80, 600, 800);
+		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
 		JButton btnCrearSala = new JButton("Crear sala");
 		btnCrearSala.setFont(new Font("Kristen ITC", Font.BOLD, 15));
 		btnCrearSala.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				String idSala ="";
-//				try(Socket cliente = new Socket("localhost", 8000);
-//		                ObjectInputStream inSocket = new ObjectInputStream(cliente.getInputStream());
-//		                DataOutputStream outSocket = new DataOutputStream(cliente.getOutputStream());){
-//					outSocket.writeInt(1);
-//	                outSocket.flush();
-//	                
-//					String salaCreada = inSocket.readLine();
-//                    if(salaCreada.equals("Has creado la sala.")){
-//                        localPort = cliente.getLocalPort();
-//                        idSala = inSocket.readLine();
-//
-//                    }
-//		        }catch(IOException ex){
-//		            ex.printStackTrace();
-//		        }
-//				
-//				if(localPort!=0 && !idSala.equals("")) {
-//					VentanaClienteHost clienteHost = new VentanaClienteHost(idSala, localPort);
-//					clienteHost.mostrarInterfaz();
-//				}
 				String idSala = cliente.crearSala();
-
 				if(cliente.getLocalPort()!=0 && !idSala.equals("")) {
-					VentanaClienteHost clienteHost = new VentanaClienteHost(cliente);
-					clienteHost.mostrarInterfaz();
+					//Cambiar
+//					VentanaClienteHost clienteHost = new VentanaClienteHost(cliente);
+//					clienteHost.mostrarInterfaz();
+					
+					cambiarVentana(cliente);
 				}
 			}
 		});
@@ -99,7 +62,7 @@ public class VentanaInicio extends JFrame {
 		
 		JButton btnSalir = new JButton("Salir");
 		btnSalir.setFont(new Font("Kristen ITC", Font.BOLD, 15));
-		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		GroupLayout gl_contentPane = new GroupLayout(this);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
@@ -131,10 +94,12 @@ public class VentanaInicio extends JFrame {
 					.addComponent(btnSalir, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(132, Short.MAX_VALUE))
 		);
-		contentPane.setLayout(gl_contentPane);
+		
+		this.setLayout(gl_contentPane);
 	}
 	
-	public void mostrarInterfaz(){
-        this.setVisible(true);
-    }
+	private void cambiarVentana(Cliente2 aux) {
+		this.cliente = aux;
+		ventanaPrincipal.cambiarAClienteHostConfig();
+	}
 }

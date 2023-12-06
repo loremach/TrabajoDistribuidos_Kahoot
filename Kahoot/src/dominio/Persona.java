@@ -14,6 +14,12 @@ public class Persona implements Serializable{
 		this.puerto=puerto;
 		this.alias = "";
 	}
+	
+	public Persona(String ip, int puerto, String alias) {
+		this.ip=ip;
+		this.puerto=puerto;
+		this.alias = alias;
+	}
 
 	public String getIp() {
 		return ip;

@@ -26,7 +26,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.*;
 
-import Interfaces.VentanaClienteHost;
 import dominio.Persona;
 import dominio.Pregunta;
 import dominio.Respuesta;
@@ -211,5 +210,9 @@ public class Cliente2{
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+    
+    public Sala getSala() {
+    	return this.sala;
     }
 }
