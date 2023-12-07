@@ -30,7 +30,7 @@ import dominio.Persona;
 import dominio.Pregunta;
 import dominio.Respuesta;
 import dominio.Sala;
-import utils.Countdown;
+import utils.CountDown;
 import utils.Empezar;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -72,16 +72,16 @@ public class Cliente2{
     		this.sala.anadirPregunta(p);
     	}
     }
-    
+    /*
     public void setListo(boolean listo) {
     	this.empezar.setListo(true);
     }
-    
+     */
     public void hostearSala(){
         try(ServerSocket ss = new ServerSocket(localPort)){
             ExecutorService pool = Executors.newFixedThreadPool(30);
-            this.empezar = new Empezar(ss);
-            this.empezar.start();
+            //this.empezar = new Empezar(ss);
+            //this.empezar.start();
             //CountDownLatch count = new CountDownLatch(30);
             //List<Future<HashMap<Persona,Integer>>> resultados = new ArrayList<>();
             //List<AtenderCliente> listaEjecuciones = new ArrayList<>();
@@ -186,8 +186,8 @@ public class Cliente2{
             String opcion;
             for (int i = 0; i<numPreg; i++){
                 pregunta = (Pregunta) inSocket.readObject();
-                Countdown countdown = new Countdown();
-                scheduler.scheduleAtFixedRate(countdown, 0, 1, SECONDS);
+                //CountDown countdown = new CountDown();
+                //scheduler.scheduleAtFixedRate(countdown, 0, 1, SECONDS);
                 System.out.println(pregunta.toString());
                 do{
                     System.out.println("Introduce la respuesta correcta (a, b, c, d):");

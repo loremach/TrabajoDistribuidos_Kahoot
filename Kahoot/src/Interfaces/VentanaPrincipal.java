@@ -55,7 +55,7 @@ public class VentanaPrincipal extends JFrame {
 		contentPane.add(new ClienteHostJugando(this.cliente, this));
 		contentPane.repaint();
 		contentPane.revalidate();
-		((ClienteHostJugando) this.clienteHostJugando).empezarAHostear();
+		//((ClienteHostJugando) this.clienteHostJugando).empezarAHostear();
 	}
 	
 	public void cambiarAClienteEntrarSala() {
@@ -67,7 +67,7 @@ public class VentanaPrincipal extends JFrame {
 	
 	public void empezar() {
 		contentPane.removeAll();
-		contentPane.add(this.inicio);
+		//contentPane.add(this.inicio);
 		contentPane.repaint();
 		contentPane.revalidate();
 		this.setVisible(true);

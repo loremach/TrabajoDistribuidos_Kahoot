@@ -13,11 +13,13 @@ public class CountDown extends TimerTask{
 	private int seconds;
 	private Timer timer;
 	private ResponderPregunta responder;
+	private CyclicBarrier barrera;
 
-	public CountDown(int sec, Timer t, ResponderPregunta responder){
+	public CountDown(int sec, Timer t, ResponderPregunta responder, CyclicBarrier barrera){
 		this.seconds = sec;
 		this.timer = t;
 		this.responder = responder;
+		this.barrera = barrera;
 	}
 
 	public void run() {
@@ -25,8 +27,19 @@ public class CountDown extends TimerTask{
 		this.seconds--;
 
 		if (this.seconds == 0) {
-			responder.interrupt();
-			timer.cancel();
+			
+			try {
+				responder.interrupt();
+				barrera.await();
+				timer.cancel();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (BrokenBarrierException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
 	}
 }

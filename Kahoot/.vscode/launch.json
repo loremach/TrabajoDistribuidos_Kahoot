@@ -1,0 +1,35 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Cliente",
+            "request": "launch",
+            "mainClass": "conexiones.Cliente",
+            "projectName": "Kahoot"
+        },
+        {
+            "type": "java",
+            "name": "ClienteGrafico",
+            "request": "launch",
+            "mainClass": "conexiones.ClienteGrafico",
+            "projectName": "Kahoot"
+        },
+        {
+            "type": "java",
+            "name": "Servidor",
+            "request": "launch",
+            "mainClass": "conexiones.Servidor",
+            "projectName": "Kahoot"
+        }
+    ]
+}

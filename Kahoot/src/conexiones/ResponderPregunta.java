@@ -14,7 +14,7 @@ public class ResponderPregunta extends Thread{
 
     public ResponderPregunta(Pregunta pregunta){
         this.pregunta = pregunta;
-        this.respuesta = null;
+        this.respuesta = new Respuesta();
     }
 
     public void run(){
@@ -24,7 +24,7 @@ public class ResponderPregunta extends Thread{
         do{
             System.out.println("Introduce la respuesta correcta (a, b, c, d):");
             opcion = teclado.nextLine();
-            System.out.println(opcion);
+            System.out.println("Has seleccionado la respuesta "+opcion);
         }while (!opcion.equals("a") && !opcion.equals("b") && !opcion.equals("c") && !opcion.equals("d"));
         teclado.close();
         this.respuesta = new Respuesta(pregunta.getRespuestaSeleccionada(opcion));

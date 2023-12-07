@@ -16,7 +16,9 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TreeMap;
+import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -25,6 +27,7 @@ import dominio.Persona;
 import dominio.Pregunta;
 import dominio.Respuesta;
 import dominio.Sala;
+import dominio.SocketCliente;
 import utils.CountDown;
 import utils.Empezar;
 
@@ -32,10 +35,12 @@ public class Cliente {
     private static Sala sala = null;
     private List<Pregunta> preguntasSala = new ArrayList<>();
     private static int localPort=0;
+    private static String ipLocal = "";
     private static HashMap<String, Persona> salas;
     private static boolean listo = false;
     private static Persona persona;
-    private static HashMap<Persona, Socket> clientesConectados = new HashMap<>();
+    //private static HashMap<Persona, Socket> clientesConectados = new HashMap<>();
+    private static HashMap<Persona, SocketCliente> clientesConectados = new HashMap<>();
     public static void main(String[] args) {
         //POR AQUI LO SEPARADO
         Scanner teclado = new Scanner(System.in);
@@ -56,7 +61,7 @@ public class Cliente {
                 hostearSala(sala);
                 break;
             case 2:
-                conectarConSala(teclado);
+                conectarConSala(teclado, opcion);
                 teclado.close();
                 break;
             default:
@@ -78,6 +83,7 @@ public class Cliente {
                 String salaCreada = inSocket.readLine();
                 if(salaCreada.equals("Has creado la sala.")){
                     localPort = cliente.getLocalPort();
+                    System.out.println(cliente.getInetAddress().getHostAddress()); 
                     System.out.println(salaCreada);
                     sala = new Sala(inSocket.readLine());
                     System.out.println("El ID de la sala es: " + sala.getIdSala());
@@ -92,6 +98,7 @@ public class Cliente {
     public static void anadirPreguntas(Scanner teclado){
         String seguir;
         String pregunta; String resCorrecta; String resInc1; String resInc2; String resInc3;
+        boolean otraPreg = true;
         do{
             System.out.println("Introduce la pregunta:");
             pregunta = teclado.nextLine();
@@ -108,41 +115,54 @@ public class Cliente {
             sala.anadirPregunta(p);
             System.out.println("Has añadido la pregunta");
 
-            System.out.println("¿Quieres añadir otra pregunta? (S/N)");
-            seguir = teclado.nextLine();
-        }while(!seguir.equals("S") && !seguir.equals("N"));
+            do{
+                System.out.println("¿Quieres añadir otra pregunta? (S/N s/n)");
+                seguir = teclado.nextLine();
+            }while(!seguir.equals("S") && !seguir.equals("N") && !seguir.equals("s") && !seguir.equals("n"));
+
+            if(seguir.equals("N")|| seguir.equals("n")) otraPreg=false;
+        } while(otraPreg);
+
         System.out.println(localPort);
-        hostearSala(sala);         
+        hostearSala(sala);       
     }
 
     private static void hostearSala(Sala sala){
         try(ServerSocket ss = new ServerSocket(localPort)){
-            ExecutorService pool = Executors.newFixedThreadPool(20);
+            //ExecutorService pool = Executors.newFixedThreadPool(20);
             //CountDownLatch count = new CountDownLatch(20);
-            List<Future<HashMap<Persona,Integer>>> resultados = new ArrayList<>();
-            List<AtenderCliente> listaEjecuciones = new ArrayList<>();
+            //List<Future<HashMap<Persona,Integer>>> resultados = new ArrayList<>();
+            //List<AtenderCliente> listaEjecuciones = new ArrayList<>();
             HashMap<Persona, Integer> tablaPuntuaciones = new HashMap<>();
-            Empezar empezar = new Empezar();
-            EnviarPreguntas enviarPreguntas = new EnviarPreguntas(clientesConectados, sala, listo);
+            boolean listo = false;
+            Empezar empezar = new Empezar(clientesConectados, sala, listo);
+            //EnviarPreguntas enviarPreguntas = new EnviarPreguntas(clientesConectados, sala, listo);
             empezar.start();
-            enviarPreguntas.start();
+            //enviarPreguntas.start();
             int i = 20;
             while (i>0) {
                 try{
                     Socket cliente = ss.accept();
                     i--;
-                    DataOutputStream outSocket = new DataOutputStream(cliente.getOutputStream());
+                    ObjectOutputStream outSocket = new ObjectOutputStream(cliente.getOutputStream());
+                    ObjectInputStream inSocket = new ObjectInputStream(cliente.getInputStream());
+
+                    SocketCliente socketCliente = new SocketCliente(cliente, inSocket, outSocket);
                     if(!listo){
-                        ObjectInputStream inSocket = new ObjectInputStream(cliente.getInputStream());
                         outSocket.writeBoolean(true);
+                        outSocket.flush();
                         Persona p = (Persona) inSocket.readObject();
+                        System.out.println(p.getAlias() + " se ha conectado");
                         tablaPuntuaciones.put(p, 0);
-                        clientesConectados.put(p, cliente);
+                        //clientesConectados.put(p, cliente);
+                        clientesConectados.put(p, socketCliente);
                         outSocket.writeInt(sala.getPreguntas().size());
                         outSocket.flush();
                     }else{
                         outSocket.writeBoolean(false);
                     }
+
+                    
 
                     // listaEjecuciones.add(new AtenderCliente(cliente, sala));
                     // //mandar las preguntas a los jugadores y recoger sus respuestas 
@@ -174,18 +194,26 @@ public class Cliente {
         }
     }
 
-    private static void conectarConSala(Scanner teclado){
+    private static void conectarConSala(Scanner teclado, int opcion){
+        Persona personaHost = null;
+        Persona personaJugador = null;
         try(Socket cliente = new Socket("localhost", 8000);
-            ObjectInputStream inSocket = new ObjectInputStream(cliente.getInputStream());
-            DataOutputStream outSocket = new DataOutputStream(cliente.getOutputStream());){
-             
+            DataOutputStream outSocket = new DataOutputStream(cliente.getOutputStream());
+            ObjectInputStream inSocket = new ObjectInputStream(cliente.getInputStream());){
+            
+            outSocket.writeInt(opcion);
+            outSocket.flush();
+
             salas = (HashMap<String, Persona>) inSocket.readObject();
             System.out.println("Introduce el ID de la sala:");
             String idSala = teclado.nextLine();
             if(salas.containsKey(idSala)){
-                Persona p = salas.get(idSala);
-                System.out.println("Puerto: "+p.getPuerto());
-                jugarEnSala(p);
+                personaHost = salas.get(idSala);
+                System.out.println("Puerto: "+personaHost.getPuerto());
+
+                System.out.println("Introduce tu alias:");
+                String alias = teclado.nextLine();
+                personaJugador = new Persona(cliente.getInetAddress().getHostAddress(), cliente.getLocalPort(), alias);
             }else{
                 System.out.println("La sala no existe.");
             }
@@ -195,30 +223,36 @@ public class Cliente {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        if(personaHost!=null && personaJugador!=null) jugarEnSala(personaHost, personaJugador);
     }
 
-
-
-    private static void jugarEnSala(Persona p){
-        try(Socket s = new Socket(p.getIp(), p.getPuerto());
-            ObjectInputStream inSocket = new ObjectInputStream(s.getInputStream());
-            ObjectOutputStream outSocket = new ObjectOutputStream(s.getOutputStream());){
+    private static void jugarEnSala(Persona personaHost, Persona personaJugador){
+        System.out.println("he entrado al método");
+        try(Socket s = new Socket(personaHost.getIp(), personaHost.getPuerto());
+            ObjectOutputStream outSocket = new ObjectOutputStream(s.getOutputStream());
+            ObjectInputStream inSocket = new ObjectInputStream(s.getInputStream());){
             
-            outSocket.writeObject(p);
+            boolean conectado = inSocket.readBoolean();
+            if(conectado) System.out.println("Me he conectado");
+            System.out.println("He llegado a aqui");
+            outSocket.writeObject(personaJugador);
+            outSocket.flush();
             int puntos = 0;
             int numPreg = inSocket.readInt();
             Pregunta pregunta;
             Respuesta respuesta;
-            String opcion;
+
             for (int i = 0; i<numPreg; i++){
+                System.out.println("Esperando pregunta");
                 pregunta = (Pregunta) inSocket.readObject();
                 Timer timer = new Timer();
-                
-                int segundos = 60;
+                CyclicBarrier barrera = new CyclicBarrier(2);
+                int segundos = 10;
                 Calendar init = Calendar.getInstance();
                 ResponderPregunta responder = new ResponderPregunta(pregunta);
                 responder.start();
-                timer.scheduleAtFixedRate(new CountDown(segundos, timer, responder), init.getTime(), 10000);
+                timer.scheduleAtFixedRate(new CountDown(segundos, timer, responder, barrera), init.getTime(), 1000);
                 // System.out.println(pregunta.toString());
                 // do{
                 //     System.out.println("Introduce la respuesta correcta (a, b, c, d):");
@@ -226,8 +260,9 @@ public class Cliente {
                 //     System.out.println(opcion);
                 // }while (!opcion.equals("a") && !opcion.equals("b") && !opcion.equals("c") && !opcion.equals("d"));
                 // respuesta = new Respuesta(pregunta.getRespuestaSeleccionada(opcion));
+                barrera.await();
                 respuesta = responder.getRespuesta();
-
+                
                 outSocket.writeObject(respuesta);
                 outSocket.flush();
 
@@ -237,6 +272,12 @@ public class Cliente {
         }catch(IOException e){
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (BrokenBarrierException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

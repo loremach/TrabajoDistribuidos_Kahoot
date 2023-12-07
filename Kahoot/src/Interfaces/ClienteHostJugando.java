@@ -124,7 +124,7 @@ public class ClienteHostJugando extends JPanel {
 		JButton btnEmpezar = new JButton("Empezar");
 		btnEmpezar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cliente.setListo(true);
+				//cliente.setListo(true);
 				tablaPuntuaciones = cliente.enviarPreguntasRecogerRespuestas();
 				textPuntuaciones.setText(mostrarPuntuaciones());
 			}
