@@ -1,8 +1,6 @@
 package conexiones;
 
 import java.util.Scanner;
-import java.util.Timer;
-
 import dominio.Pregunta;
 import dominio.Respuesta;
 
@@ -26,7 +24,7 @@ public class ResponderPregunta extends Thread{
             opcion = teclado.nextLine();
             System.out.println("Has seleccionado la respuesta "+opcion);
         }while (!opcion.equals("a") && !opcion.equals("b") && !opcion.equals("c") && !opcion.equals("d"));
-        teclado.close();
+        //teclado.close();
         this.respuesta = new Respuesta(pregunta.getRespuestaSeleccionada(opcion));
     }
 

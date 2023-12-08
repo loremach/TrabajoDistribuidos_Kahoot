@@ -3,25 +3,30 @@ package conexiones;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
+import java.util.Timer;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
-import Interfaces.VentanaPrincipal;
 import dominio.Persona;
 import dominio.Pregunta;
+import dominio.Respuesta;
 import dominio.Sala;
+import dominio.SocketCliente;
+import Interfaces.VentanaPrincipal;
+import utils.CountDown;
+import utils.Empezar;
 
 public class ClienteGrafico extends JFrame{
-    private static Sala sala = null;
-    private List<Pregunta> preguntasSala = new ArrayList<>();
-    private static int localPort=0;
-    private static HashMap<String, Persona> salas;
-    private static boolean listo = false;
-
     public static void main(String [] args){
 //        VentanaInicio pantalla=new VentanaInicio(); 
 //        pantalla.mostrarInterfaz();
@@ -29,4 +34,7 @@ public class ClienteGrafico extends JFrame{
     	VentanaPrincipal ventana= new VentanaPrincipal(cliente);
         ventana.empezar();
     }
+
+
+    
 }

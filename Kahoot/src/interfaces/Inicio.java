@@ -34,13 +34,9 @@ public class Inicio extends JPanel {
 		btnCrearSala.setFont(new Font("Kristen ITC", Font.BOLD, 15));
 		btnCrearSala.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String idSala = cliente.crearSala();
+				String idSala = cliente.crearSala(1);
 				if(cliente.getLocalPort()!=0 && !idSala.equals("")) {
-					//Cambiar
-//					VentanaClienteHost clienteHost = new VentanaClienteHost(cliente);
-//					clienteHost.mostrarInterfaz();
-					
-					cambiarVentana(cliente);
+					cambiarVentanaHost(cliente);
 				}
 			}
 		});
@@ -57,6 +53,7 @@ public class Inicio extends JPanel {
 		btnUnirse.setFont(new Font("Kristen ITC", Font.BOLD, 15));
 		btnUnirse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				cambiarVentanaJugador(cliente);
 			}
 		});
 		
@@ -98,8 +95,13 @@ public class Inicio extends JPanel {
 		this.setLayout(gl_contentPane);
 	}
 	
-	private void cambiarVentana(Cliente2 aux) {
+	private void cambiarVentanaHost(Cliente2 aux) {
 		this.cliente = aux;
 		ventanaPrincipal.cambiarAClienteHostConfig();
+	}
+
+	private void cambiarVentanaJugador(Cliente2 aux) {
+		this.cliente = aux;
+		ventanaPrincipal.cambiarAClienteEntrarSala();
 	}
 }

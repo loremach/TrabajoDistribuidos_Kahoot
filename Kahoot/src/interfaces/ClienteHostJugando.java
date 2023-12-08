@@ -23,6 +23,8 @@ import conexiones.Cliente2;
 import dominio.Persona;
 import dominio.Pregunta;
 import dominio.Sala;
+import utils.Empezar;
+import utils.Empezar2;
 
 public class ClienteHostJugando extends JPanel {
 
@@ -46,6 +48,7 @@ public class ClienteHostJugando extends JPanel {
 		this.cliente = cliente;
 		this.ventanaPrincipal = ventana;
 		
+
 		this.setBounds(700, 80, 600, 800);
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.setVisible(true);
@@ -122,11 +125,11 @@ public class ClienteHostJugando extends JPanel {
 		panel_1.setLayout(gl_panel_1);
 
 		JButton btnEmpezar = new JButton("Empezar");
+
+		Empezar2 empezar = new Empezar2(cliente.getClientesConectados(), cliente.getSala(), textPuntuaciones);
 		btnEmpezar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//cliente.setListo(true);
-				tablaPuntuaciones = cliente.enviarPreguntasRecogerRespuestas();
-				textPuntuaciones.setText(mostrarPuntuaciones());
+            	empezar.start();
 			}
 		});
 		btnEmpezar.setFont(new Font("Kristen ITC", Font.BOLD, 18));
@@ -141,8 +144,16 @@ public class ClienteHostJugando extends JPanel {
 		gl_panel.setVerticalGroup(gl_panel.createParallelGroup(Alignment.LEADING).addGroup(Alignment.TRAILING, gl_panel
 				.createSequentialGroup().addContainerGap(32, Short.MAX_VALUE).addComponent(lblKahoot).addGap(25)));
 		panel.setLayout(gl_panel);
-		
+
 		this.setLayout(gl_contentPane);
+
+		Thread hiloHostear = new Thread(new Runnable() {
+			public void run(){
+				cliente.hostearSala(textPuntuaciones, empezar);
+			}
+		});
+
+		hiloHostear.start();
 	}
 	
 	public String mostrarPuntuaciones() {
@@ -155,7 +166,4 @@ public class ClienteHostJugando extends JPanel {
 		return mostrar;
 	}
 	
-	public void empezarAHostear() {
-		this.cliente.hostearSala();
-	}
 }

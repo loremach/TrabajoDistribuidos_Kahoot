@@ -1,7 +1,6 @@
 package conexiones;
 
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -94,7 +93,6 @@ public class Servidor {
 				i--;
 			}
 		}
-
 		return buff.toString();
 	}
 }

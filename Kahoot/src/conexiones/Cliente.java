@@ -1,28 +1,17 @@
 package conexiones;
 
-import java.io.DataInputStream;
-import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.security.Timestamp;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
 import java.util.Timer;
-import java.util.TreeMap;
 import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
 import dominio.Persona;
 import dominio.Pregunta;
 import dominio.Respuesta;
@@ -33,16 +22,10 @@ import utils.Empezar;
 
 public class Cliente {
     private static Sala sala = null;
-    private List<Pregunta> preguntasSala = new ArrayList<>();
     private static int localPort=0;
-    private static String ipLocal = "";
     private static HashMap<String, Persona> salas;
-    private static boolean listo = false;
-    private static Persona persona;
-    //private static HashMap<Persona, Socket> clientesConectados = new HashMap<>();
     private static HashMap<Persona, SocketCliente> clientesConectados = new HashMap<>();
     public static void main(String[] args) {
-        //POR AQUI LO SEPARADO
         Scanner teclado = new Scanner(System.in);
         int opcion = 0;
         do{
@@ -68,9 +51,6 @@ public class Cliente {
                 teclado.close();
                 return;
         }
-        
-        //HASTA AQUI
-
     }
 
     private static void crearSala(int opcion){
@@ -129,16 +109,9 @@ public class Cliente {
 
     private static void hostearSala(Sala sala){
         try(ServerSocket ss = new ServerSocket(localPort)){
-            //ExecutorService pool = Executors.newFixedThreadPool(20);
-            //CountDownLatch count = new CountDownLatch(20);
-            //List<Future<HashMap<Persona,Integer>>> resultados = new ArrayList<>();
-            //List<AtenderCliente> listaEjecuciones = new ArrayList<>();
             HashMap<Persona, Integer> tablaPuntuaciones = new HashMap<>();
-            boolean listo = false;
-            Empezar empezar = new Empezar(clientesConectados, sala, listo);
-            //EnviarPreguntas enviarPreguntas = new EnviarPreguntas(clientesConectados, sala, listo);
+            Empezar empezar = new Empezar(clientesConectados, sala);
             empezar.start();
-            //enviarPreguntas.start();
             int i = 20;
             while (i>0) {
                 try{
@@ -148,44 +121,22 @@ public class Cliente {
                     ObjectInputStream inSocket = new ObjectInputStream(cliente.getInputStream());
 
                     SocketCliente socketCliente = new SocketCliente(cliente, inSocket, outSocket);
-                    if(!listo){
+                    if(!empezar.getListo()){
                         outSocket.writeBoolean(true);
                         outSocket.flush();
                         Persona p = (Persona) inSocket.readObject();
                         System.out.println(p.getAlias() + " se ha conectado");
                         tablaPuntuaciones.put(p, 0);
-                        //clientesConectados.put(p, cliente);
                         clientesConectados.put(p, socketCliente);
                         outSocket.writeInt(sala.getPreguntas().size());
                         outSocket.flush();
                     }else{
                         outSocket.writeBoolean(false);
-                    }
-
-                    
-
-                    // listaEjecuciones.add(new AtenderCliente(cliente, sala));
-                    // //mandar las preguntas a los jugadores y recoger sus respuestas 
-                    // if(i==0 || listo){
-                    //     resultados=pool.invokeAll(listaEjecuciones);
-                    // }
-                    // HashMap<Persona, Integer> aux;
-                    // for (int j = 0; j<resultados.size(); j++){
-                    //     tablaPuntuaciones.putAll((HashMap<Persona, Integer>) resultados.get(j));
-                    // }
-                    // TreeMap<Persona, Integer> sorted = new TreeMap<>(tablaPuntuaciones);
-                    // System.out.println("Puntuaciones:");
-                    // for(Persona p: sorted.keySet()){
-                    //     System.out.println(p.getIp() + " : " + sorted.get(p));
-                    // }
-                    
+                        outSocket.flush();
+                    }                    
                 }catch(IOException ex){
                     ex.printStackTrace();
-                // } catch (InterruptedException e) {
-                //     // TODO Auto-generated catch block
-                //     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
@@ -216,69 +167,60 @@ public class Cliente {
                 personaJugador = new Persona(cliente.getInetAddress().getHostAddress(), cliente.getLocalPort(), alias);
             }else{
                 System.out.println("La sala no existe.");
-            }
-                    
+            }    
         }catch(IOException ex){
             ex.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
         if(personaHost!=null && personaJugador!=null) jugarEnSala(personaHost, personaJugador);
     }
 
     private static void jugarEnSala(Persona personaHost, Persona personaJugador){
-        System.out.println("he entrado al método");
         try(Socket s = new Socket(personaHost.getIp(), personaHost.getPuerto());
             ObjectOutputStream outSocket = new ObjectOutputStream(s.getOutputStream());
             ObjectInputStream inSocket = new ObjectInputStream(s.getInputStream());){
             
             boolean conectado = inSocket.readBoolean();
-            if(conectado) System.out.println("Me he conectado");
-            System.out.println("He llegado a aqui");
-            outSocket.writeObject(personaJugador);
-            outSocket.flush();
-            int puntos = 0;
-            int numPreg = inSocket.readInt();
-            Pregunta pregunta;
-            Respuesta respuesta;
-
-            for (int i = 0; i<numPreg; i++){
-                System.out.println("Esperando pregunta");
-                pregunta = (Pregunta) inSocket.readObject();
-                Timer timer = new Timer();
-                CyclicBarrier barrera = new CyclicBarrier(2);
-                int segundos = 10;
-                Calendar init = Calendar.getInstance();
-                ResponderPregunta responder = new ResponderPregunta(pregunta);
-                responder.start();
-                timer.scheduleAtFixedRate(new CountDown(segundos, timer, responder, barrera), init.getTime(), 1000);
-                // System.out.println(pregunta.toString());
-                // do{
-                //     System.out.println("Introduce la respuesta correcta (a, b, c, d):");
-                //     opcion = teclado.nextLine();
-                //     System.out.println(opcion);
-                // }while (!opcion.equals("a") && !opcion.equals("b") && !opcion.equals("c") && !opcion.equals("d"));
-                // respuesta = new Respuesta(pregunta.getRespuestaSeleccionada(opcion));
-                barrera.await();
-                respuesta = responder.getRespuesta();
-                
-                outSocket.writeObject(respuesta);
+            if(conectado) {
+                System.out.println("Te has conectado");
+                outSocket.writeObject(personaJugador);
                 outSocket.flush();
+                int puntos = 0;
+                int numPreg = inSocket.readInt();
+                Pregunta pregunta;
+                Respuesta respuesta;
 
-                puntos = inSocket.readInt();
-                System.out.println("Tienes "+ puntos + " puntos!");
+                for (int i = 0; i<numPreg; i++){
+                    System.out.println("Esperando pregunta...");
+                    pregunta = (Pregunta) inSocket.readObject();
+                    Timer timer = new Timer();
+                    CyclicBarrier barrera = new CyclicBarrier(2);
+                    int segundos = 30;
+                    Calendar init = Calendar.getInstance();
+                    ResponderPregunta responder = new ResponderPregunta(pregunta);
+                    responder.start();
+                    timer.scheduleAtFixedRate(new CountDown(segundos, timer, responder, barrera), init.getTime(), 1000);
+
+                    barrera.await();
+                    respuesta = responder.getRespuesta();
+                    
+                    outSocket.writeObject(respuesta);
+                    outSocket.flush();
+
+                    puntos = puntos + inSocket.readInt();
+                    System.out.println("Tienes "+ puntos + " puntos!");
+                }
+            }else{
+                System.out.println("La partida ya ha empezado");
             }
         }catch(IOException e){
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (BrokenBarrierException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

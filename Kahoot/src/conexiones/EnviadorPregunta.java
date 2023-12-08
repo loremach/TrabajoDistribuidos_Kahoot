@@ -1,12 +1,9 @@
 package conexiones;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
@@ -18,7 +15,6 @@ import dominio.SocketCliente;
 
 public class EnviadorPregunta implements Callable<HashMap<Persona, Integer>>{
     
-    //private Socket cliente;
     private SocketCliente cliente;
     private Persona persona;
     private Pregunta pregunta;
@@ -31,15 +27,13 @@ public class EnviadorPregunta implements Callable<HashMap<Persona, Integer>>{
         this.persona = persona;
         this.pregunta = pregunta;
         this.barrera = barrera;
+        this.recoger = recoger;
     }
 
     @Override
     public HashMap<Persona, Integer> call() throws Exception {
         barrera.await();
         int puntos = 0;
-
-        // ObjectOutputStream outSocket = new ObjectOutputStream(cliente.getOutputStream());
-        // ObjectInputStream inSocket = new ObjectInputStream(cliente.getInputStream());
 
         ObjectOutputStream outSocket = cliente.getObjectOutputStream();
         ObjectInputStream inSocket = cliente.getObjectInputStream();
@@ -50,7 +44,7 @@ public class EnviadorPregunta implements Callable<HashMap<Persona, Integer>>{
         Respuesta respuesta = (Respuesta) inSocket.readObject();
         if(!respuesta.getRespuesta().equals("")){
             if(pregunta.esCorrecta(respuesta.getRespuesta())){
-                puntos = Math.round(60 - (respuesta.getTiempoRespuesta().getTimeInMillis()-init.getTimeInMillis())/1000);
+                puntos = Math.round(30 - (respuesta.getTiempoRespuesta().getTimeInMillis()-init.getTimeInMillis())/1000);
             }
         }
 

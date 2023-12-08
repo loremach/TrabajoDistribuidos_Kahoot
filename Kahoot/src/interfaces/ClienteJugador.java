@@ -15,22 +15,27 @@ import javax.swing.border.EmptyBorder;
 
 import conexiones.Cliente2;
 import dominio.Persona;
+import javax.swing.SwingConstants;
+import java.awt.SystemColor;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ClienteJugador extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private Cliente2 cliente;
-	private Persona persona;
+	private Persona personaJugador;
+	private Persona personaHost;
 	private VentanaPrincipal ventanaPrincipal;
 
 	/**
 	 * Create the panel.
 	 */
-	public ClienteJugador(Cliente2 cliente, Persona persona, VentanaPrincipal ventana) {
+	public ClienteJugador(Cliente2 cliente, VentanaPrincipal ventana, Persona personaHost, Persona personaJugador) {
 		this.cliente = cliente;
-		this.persona = persona;
+		this.personaHost = personaHost;
+		this.personaJugador = personaJugador;
 		this.ventanaPrincipal = ventana;
-		this.cliente.jugarEnSala(persona);
 		
 		this.setBounds(700, 80, 600, 800);
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -40,6 +45,9 @@ public class ClienteJugador extends JPanel {
 		JPanel panelPreguntaPuntos = new JPanel();
 		
 		JPanel PanelBotonesRespuesta = new JPanel();
+		
+		cliente.jugarEnSala(personaHost, personaJugador, panelPreguntaPuntos, PanelBotonesRespuesta);
+		
 		GroupLayout gl_contentPane = new GroupLayout(this);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -59,19 +67,39 @@ public class ClienteJugador extends JPanel {
 		PanelBotonesRespuesta.setLayout(new GridLayout(2, 2, 0, 0));
 		
 		JButton btnRespuestaA = new JButton("New button");
+		btnRespuestaA.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cliente.setRespuestaJugador(1);
+			}
+		});
 		btnRespuestaA.setBackground(new Color(41, 167, 241));
 		btnRespuestaA.setForeground(new Color(0, 0, 0));
 		PanelBotonesRespuesta.add(btnRespuestaA);
 		
 		JButton btnRespuestaB = new JButton("New button");
+		btnRespuestaB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cliente.setRespuestaJugador(2);
+			}
+		});
 		btnRespuestaB.setBackground(new Color(255, 0, 0));
 		PanelBotonesRespuesta.add(btnRespuestaB);
 		
 		JButton btnRespuestaC = new JButton("New button");
+		btnRespuestaC.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cliente.setRespuestaJugador(3);
+			}
+		});
 		btnRespuestaC.setBackground(new Color(255, 255, 0));
 		PanelBotonesRespuesta.add(btnRespuestaC);
 		
 		JButton btnRespuestaD = new JButton("New button");
+		btnRespuestaD.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cliente.setRespuestaJugador(4);
+			}
+		});
 		btnRespuestaD.setBackground(new Color(0, 187, 94));
 		PanelBotonesRespuesta.add(btnRespuestaD);
 		
@@ -95,24 +123,43 @@ public class ClienteJugador extends JPanel {
 		);
 		panelKahoot.setLayout(gl_panelKahoot);
 		
-		JTextPane textPane = new JTextPane();
+		JTextPane textPregunta = new JTextPane();
+		textPregunta.setBackground(SystemColor.menu);
+		
+		JLabel lblPuntos = new JLabel("Puntos: 0");
+		lblPuntos.setFont(new Font("Kristen ITC", Font.PLAIN, 20));
+		
+		JLabel lblTiempo = new JLabel("30");
+		lblTiempo.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTiempo.setForeground(new Color(255, 0, 0));
+		lblTiempo.setFont(new Font("Kristen ITC", Font.BOLD, 26));
 		GroupLayout gl_panelPreguntaPuntos = new GroupLayout(panelPreguntaPuntos);
 		gl_panelPreguntaPuntos.setHorizontalGroup(
 			gl_panelPreguntaPuntos.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelPreguntaPuntos.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(textPane, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
+					.addGroup(gl_panelPreguntaPuntos.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelPreguntaPuntos.createSequentialGroup()
+							.addComponent(textPregunta, GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)
+							.addContainerGap())
+						.addGroup(Alignment.TRAILING, gl_panelPreguntaPuntos.createSequentialGroup()
+							.addComponent(lblPuntos, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
+							.addGap(128)
+							.addComponent(lblTiempo, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
+							.addGap(43))))
 		);
 		gl_panelPreguntaPuntos.setVerticalGroup(
 			gl_panelPreguntaPuntos.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelPreguntaPuntos.createSequentialGroup()
-					.addGap(5)
-					.addComponent(textPane, GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
+				.addGroup(Alignment.TRAILING, gl_panelPreguntaPuntos.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panelPreguntaPuntos.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblTiempo, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblPuntos, GroupLayout.PREFERRED_SIZE, 26, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(textPregunta, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
 		panelPreguntaPuntos.setLayout(gl_panelPreguntaPuntos);
 		this.setLayout(gl_contentPane);
 	}
-
 }

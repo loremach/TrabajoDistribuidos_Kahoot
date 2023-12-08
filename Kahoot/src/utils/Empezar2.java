@@ -12,6 +12,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import javax.swing.JTextArea;
+
 import conexiones.AtenderCliente;
 import conexiones.Cliente;
 import conexiones.EnviadorPregunta;
@@ -20,33 +22,20 @@ import dominio.Pregunta;
 import dominio.Sala;
 import dominio.SocketCliente;
 
-public class Empezar extends Thread{
+public class Empezar2 extends Thread{
 	private boolean listo;
 	private HashMap<Persona, SocketCliente> clientesConectados = new HashMap<>();
     private Sala sala;
+    JTextArea textPuntuaciones;
 	
-	public Empezar(HashMap<Persona, SocketCliente> clientes, Sala sala) {
+	public Empezar2(HashMap<Persona, SocketCliente> clientes, Sala sala, JTextArea textPuntuaciones) {
 		this.clientesConectados = clientes;
         this.sala = sala;
         this.listo = false;
+        JTextArea textPuntuactiones = textPuntuaciones;
 	}
 	
 	public void run() {
-		Scanner teclado = new Scanner(System.in);
-		System.out.println("Pulsa ENTER cuando estés listo");
-		String entrada = "A";
-		boolean permitido = false;
-		do{
-			entrada = teclado.nextLine();
-			if(entrada.equals("")) {
-				if(clientesConectados.size()==0){
-					System.out.println("Debe haber al menos un jugador conectado");
-				}else{
-					permitido=true;
-				}
-			}
-		}while(!entrada.equals("") || !permitido);
-		System.out.println("Has pulsado ENTER");
 		this.listo = true;
 		
 		ExecutorService pool = Executors.newFixedThreadPool(20);
@@ -77,19 +66,13 @@ public class Empezar extends Thread{
                     auxPersona = new ArrayList<Persona> (aux.keySet());
                     tablaPuntuaciones.put(auxPersona.get(0), tablaPuntuaciones.get(auxPersona.get(0))+ aux.get(auxPersona.get(0)));
                 }
-
-                System.out.println(escribirTablaPuntuaciones(tablaPuntuaciones));
                 
-                if(i!=numPreg-1){
-                    System.out.println("Pulsa ENTER cuando quieras enviar la siguiente pregunta");
-                    entrada = "A";
-                    do{
-                        entrada = teclado.nextLine();
-                    }while(!entrada.equals(""));
-                    System.out.println("Siguiente pregunta enviada");
-                }else{
+                if(i==numPreg-1){
                     Persona ganador = calcularGanador(tablaPuntuaciones);
-                    System.out.println("¡Ha ganado " + ganador.getAlias() + " con " + tablaPuntuaciones.get(ganador) + " puntos!");
+                    this.textPuntuaciones.setText(escribirTablaPuntuaciones(tablaPuntuaciones) + 
+                    "\n\n" + "¡Ha ganado " + ganador.getAlias() + " con " + tablaPuntuaciones.get(ganador) + " puntos!");  
+                }else{
+                    this.textPuntuaciones.setText(escribirTablaPuntuaciones(tablaPuntuaciones));
                 }
 			}
 		}catch (InterruptedException e) {

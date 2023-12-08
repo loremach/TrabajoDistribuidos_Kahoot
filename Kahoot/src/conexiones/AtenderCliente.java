@@ -33,7 +33,6 @@ public class AtenderCliente implements Callable<HashMap<Persona,Integer>> {
             ObjectInputStream inSocket = new ObjectInputStream(conexion.getInputStream());
             
             this.persona = (Persona) inSocket.readObject();
-            //Falta añadir coundowns para que empiecen a la vez
             List<Pregunta> listaPreguntas = sala.getPreguntas();
             outSocket.writeInt(listaPreguntas.size());
             outSocket.flush();

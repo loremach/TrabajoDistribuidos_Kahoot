@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -124,19 +125,20 @@ public class ClienteEntrarSala extends JPanel {
 				if(textNombreJugador.getText()!="" || textIdSala.getText()!="") {
 					String idSala = textIdSala.getText();
 					String alias = textNombreJugador.getText();
-					if(cliente.getSalas().containsKey(idSala)){
-		                Persona p = cliente.getSalas().get(idSala);
-		                p.setAlias(alias);
+					ArrayList<Persona> personas = cliente.conectarConSala(2, idSala, alias);
+
+					if(personas.get(0)!=null && personas.get(1)!=null){
+		                Persona personaHost = personas.get(0);
+						Persona personaJugador = personas.get(1);
 		                //VentanaClienteJugador ventanaNueva = new VentanaClienteJugador(cliente, p);
 		                //ventanaNueva.setVisible(true);
+						cambiarVentana(cliente, personaHost, personaJugador);
 		            }else{
 		            	lblInformarError.setText("La sala no existe");
 		            }
 				}else {
 					lblInformarError.setText("¡Rellena todos los campos!");
 				}
-				
-				
 			}
 		});
 		btnNewButton.setFont(new Font("Kristen ITC", Font.BOLD, 20));
@@ -190,6 +192,11 @@ public class ClienteEntrarSala extends JPanel {
 		);
 		panel.setLayout(gl_panel);
 		this.setLayout(gl_contentPane);
+	}
+
+	public void cambiarVentana(Cliente2 aux, Persona personaHost, Persona personaJugador) {
+		this.cliente = aux;
+		ventanaPrincipal.cambiarAClienteJugador(personaHost, personaJugador);
 	}
 
 }

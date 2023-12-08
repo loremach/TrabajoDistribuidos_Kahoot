@@ -57,5 +57,17 @@ public class Pregunta implements Serializable{
         }
         return respuesta;
     }
+
+    public String getPregunta(){
+        return this.pregunta;
+    }
     
+
+    public List<String> getRespuestasDesordenadas(){
+        List<String> respuestas = Arrays.asList(respuestaCorrecta, respuestaIncA,
+                                                respuestaIncB, respuestaIncB);
+
+        Collections.shuffle(respuestas);
+        return respuestas;
+    }
 }

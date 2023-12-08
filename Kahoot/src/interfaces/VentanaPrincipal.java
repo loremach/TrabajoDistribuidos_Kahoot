@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import conexiones.Cliente2;
+import dominio.Persona;
 
 public class VentanaPrincipal extends JFrame {
 
@@ -67,12 +68,18 @@ public class VentanaPrincipal extends JFrame {
 	
 	public void empezar() {
 		contentPane.removeAll();
-		//contentPane.add(this.inicio);
+		contentPane.add(new Inicio(this.cliente, this));
 		contentPane.repaint();
 		contentPane.revalidate();
 		this.setVisible(true);
 	}
 	
+	public void cambiarAClienteJugador(Persona personaHost, Persona personaJugador){
+		contentPane.removeAll();
+		contentPane.add(new ClienteJugador(this.cliente, this, personaHost, personaJugador));
+		contentPane.repaint();
+		contentPane.revalidate();
+	}
 	
 
 }

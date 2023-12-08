@@ -183,6 +183,12 @@ public class ClienteHostConfig extends JPanel {
 					Pregunta p = new Pregunta(textPregunta.getText(), textRespuestaCorrecta.getText(), textRespuestaFalsa1.getText(), textRespuestaFalsa2.getText(), textRespuestaFalsa3.getText());
 					cliente.aniadirPreguntaASala(p);
 					JOptionPane.showMessageDialog(null,"Pregunta añadida correctamente.");
+					textPregunta.setText("");
+					textRespuestaCorrecta.setText("");
+					textRespuestaFalsa1.setText("");
+					textRespuestaFalsa2.setText("");
+					textRespuestaFalsa3.setText("");
+
 				}else {
 					JOptionPane.showMessageDialog(null,"Rellena todos los campos.");
 				}
