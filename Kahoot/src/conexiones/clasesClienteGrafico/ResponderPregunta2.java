@@ -1,4 +1,4 @@
-package conexiones;
+package conexiones.clasesClienteGrafico;
 
 import java.util.ArrayList;
 import java.util.Collections;

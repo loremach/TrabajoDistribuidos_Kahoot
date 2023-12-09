@@ -16,7 +16,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
-import conexiones.Cliente2;
+import conexiones.clasesClienteGrafico.Cliente2;
 import dominio.Persona;
 
 public class ClienteEntrarSala extends JPanel {
@@ -46,6 +46,7 @@ public class ClienteEntrarSala extends JPanel {
 		lblNombre.setFont(new Font("Kristen ITC", Font.BOLD, 20));
 		
 		textNombreJugador = new JTextField();
+		textNombreJugador.setFont(new Font("Kristen ITC", Font.PLAIN, 14));
 		textNombreJugador.setColumns(10);
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
@@ -127,11 +128,11 @@ public class ClienteEntrarSala extends JPanel {
 					String alias = textNombreJugador.getText();
 					ArrayList<Persona> personas = cliente.conectarConSala(2, idSala, alias);
 
-					if(personas.get(0)!=null && personas.get(1)!=null){
+					if(personas!=null){
+						lblInformarError.setText("");
 		                Persona personaHost = personas.get(0);
 						Persona personaJugador = personas.get(1);
-		                //VentanaClienteJugador ventanaNueva = new VentanaClienteJugador(cliente, p);
-		                //ventanaNueva.setVisible(true);
+		                
 						cambiarVentana(cliente, personaHost, personaJugador);
 		            }else{
 		            	lblInformarError.setText("La sala no existe");
@@ -170,6 +171,7 @@ public class ClienteEntrarSala extends JPanel {
 		lblPedirID.setFont(new Font("Kristen ITC", Font.BOLD, 20));
 		
 		textIdSala = new JTextField();
+		textIdSala.setFont(new Font("Kristen ITC", Font.PLAIN, 14));
 		textIdSala.setColumns(10);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(

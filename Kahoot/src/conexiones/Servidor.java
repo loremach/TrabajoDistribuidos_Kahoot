@@ -28,7 +28,6 @@ public class Servidor {
 							atenderPeticion(cliente);
 						}
 					});
-
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}

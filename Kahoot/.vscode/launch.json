@@ -6,6 +6,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "ClienteConsola",
+            "request": "launch",
+            "mainClass": "conexiones.ClienteConsola",
+            "projectName": "Kahoot"
+        },
+        {
+            "type": "java",
+            "name": "ClienteGrafico",
+            "request": "launch",
+            "mainClass": "conexiones.clienteGrafico.ClienteGrafico",
+            "projectName": "Kahoot"
+        },
+        {
+            "type": "java",
+            "name": "Cliente",
+            "request": "launch",
+            "mainClass": "conexiones.clienteConsola.Cliente",
+            "projectName": "Kahoot"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"

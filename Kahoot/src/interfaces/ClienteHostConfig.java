@@ -19,7 +19,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
-import conexiones.Cliente2;
+import conexiones.clasesClienteGrafico.Cliente2;
 import dominio.Persona;
 import dominio.Pregunta;
 
@@ -100,35 +100,35 @@ public class ClienteHostConfig extends JPanel {
 		lblPregunta.setFont(new Font("Kristen ITC", Font.BOLD, 15));
 		
 		JTextArea textPregunta = new JTextArea();
-		textPregunta.setFont(new Font("Kristen ITC", Font.PLAIN, 13));
+		textPregunta.setFont(new Font("Kristen ITC", Font.PLAIN, 14));
 		textPregunta.setRows(8);
 		
 		JLabel lblRespuestaCorrecta = new JLabel("Introduce la respuesta correcta");
 		lblRespuestaCorrecta.setFont(new Font("Kristen ITC", Font.BOLD, 15));
 		
 		textRespuestaCorrecta = new JTextField();
-		textRespuestaCorrecta.setFont(new Font("Kristen ITC", Font.PLAIN, 13));
+		textRespuestaCorrecta.setFont(new Font("Kristen ITC", Font.PLAIN, 14));
 		textRespuestaCorrecta.setColumns(10);
 		
 		JLabel lblRespuestaFalsa1 = new JLabel("Introduce la respuesta falsa 1");
 		lblRespuestaFalsa1.setFont(new Font("Kristen ITC", Font.BOLD, 15));
 		
 		textRespuestaFalsa1 = new JTextField();
-		textRespuestaFalsa1.setFont(new Font("Kristen ITC", Font.PLAIN, 13));
+		textRespuestaFalsa1.setFont(new Font("Kristen ITC", Font.PLAIN, 14));
 		textRespuestaFalsa1.setColumns(10);
 		
 		JLabel lblRespuestaFalsa2 = new JLabel("Introduce la respuesta falsa 2");
 		lblRespuestaFalsa2.setFont(new Font("Kristen ITC", Font.BOLD, 15));
 		
 		textRespuestaFalsa2 = new JTextField();
-		textRespuestaFalsa2.setFont(new Font("Kristen ITC", Font.PLAIN, 13));
+		textRespuestaFalsa2.setFont(new Font("Kristen ITC", Font.PLAIN, 14));
 		textRespuestaFalsa2.setColumns(10);
 		
 		JLabel lblRespuestaFalsa3 = new JLabel("Introduce la respuesta falsa 3");
 		lblRespuestaFalsa3.setFont(new Font("Kristen ITC", Font.BOLD, 15));
 		
 		textRespuestaFalsa3 = new JTextField();
-		textRespuestaFalsa3.setFont(new Font("Kristen ITC", Font.PLAIN, 13));
+		textRespuestaFalsa3.setFont(new Font("Kristen ITC", Font.PLAIN, 14));
 		textRespuestaFalsa3.setColumns(10);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
@@ -199,9 +199,6 @@ public class ClienteHostConfig extends JPanel {
 		JButton btnEmpezar = new JButton("Empezar");
 		btnEmpezar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//cambiar
-//				VentanaClienteHostJuegoEmpezado empiezaJuego = new VentanaClienteHostJuegoEmpezado(cliente);
-//				empiezaJuego.mostrarInterfaz();
 				cambiarVentana(cliente);
 			}
 		});

@@ -1,4 +1,4 @@
-package conexiones;
+package conexiones.clasesClienteConsola;
 
 import java.util.Scanner;
 import dominio.Pregunta;

@@ -12,15 +12,18 @@ import java.util.Scanner;
 import java.util.Timer;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
+
+import conexiones.clasesClienteConsola.Empezar;
+import conexiones.clasesClienteConsola.HostearSala;
+import conexiones.clasesClienteConsola.ResponderPregunta;
 import dominio.Persona;
 import dominio.Pregunta;
 import dominio.Respuesta;
 import dominio.Sala;
 import dominio.SocketCliente;
 import utils.CountDown;
-import utils.Empezar;
 
-public class Cliente {
+public class ClienteConsola {
     private static Sala sala = null;
     private static int localPort=0;
     private static HashMap<String, Persona> salas;
@@ -40,17 +43,19 @@ public class Cliente {
             case 1:
                 crearSala(opcion);
                 anadirPreguntas(teclado);
-                teclado.close();
                 hostearSala(sala);
+                System.out.println("HE PASADO POR AQUI QUE ES EL FINAL");
                 break;
             case 2:
                 conectarConSala(teclado, opcion);
-                teclado.close();
                 break;
             default:
                 teclado.close();
                 return;
         }
+        teclado.close();
+        System.out.println("YA NO HAY MAS");
+        return;
     }
 
     private static void crearSala(int opcion){
@@ -63,8 +68,6 @@ public class Cliente {
                 String salaCreada = inSocket.readLine();
                 if(salaCreada.equals("Has creado la sala.")){
                     localPort = cliente.getLocalPort();
-                    System.out.println(cliente.getInetAddress().getHostAddress()); 
-                    System.out.println(salaCreada);
                     sala = new Sala(inSocket.readLine());
                     System.out.println("El ID de la sala es: " + sala.getIdSala());
                 }else{
@@ -101,47 +104,21 @@ public class Cliente {
             }while(!seguir.equals("S") && !seguir.equals("N") && !seguir.equals("s") && !seguir.equals("n"));
 
             if(seguir.equals("N")|| seguir.equals("n")) otraPreg=false;
-        } while(otraPreg);
-
-        System.out.println(localPort);
-        hostearSala(sala);       
+        } while(otraPreg);     
     }
 
     private static void hostearSala(Sala sala){
-        try(ServerSocket ss = new ServerSocket(localPort)){
+        try{
             HashMap<Persona, Integer> tablaPuntuaciones = new HashMap<>();
             Empezar empezar = new Empezar(clientesConectados, sala);
+            HostearSala hostear = new HostearSala(localPort, clientesConectados, sala, tablaPuntuaciones, empezar);
+            hostear.start();
             empezar.start();
-            int i = 20;
-            while (i>0) {
-                try{
-                    Socket cliente = ss.accept();
-                    i--;
-                    ObjectOutputStream outSocket = new ObjectOutputStream(cliente.getOutputStream());
-                    ObjectInputStream inSocket = new ObjectInputStream(cliente.getInputStream());
-
-                    SocketCliente socketCliente = new SocketCliente(cliente, inSocket, outSocket);
-                    if(!empezar.getListo()){
-                        outSocket.writeBoolean(true);
-                        outSocket.flush();
-                        Persona p = (Persona) inSocket.readObject();
-                        System.out.println(p.getAlias() + " se ha conectado");
-                        tablaPuntuaciones.put(p, 0);
-                        clientesConectados.put(p, socketCliente);
-                        outSocket.writeInt(sala.getPreguntas().size());
-                        outSocket.flush();
-                    }else{
-                        outSocket.writeBoolean(false);
-                        outSocket.flush();
-                    }                    
-                }catch(IOException ex){
-                    ex.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        }catch(IOException ex){
-            ex.printStackTrace();
+            empezar.join();
+            hostear.interrupt();
+            System.out.println("HE PASADO POR AQUI");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

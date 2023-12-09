@@ -1,6 +1,5 @@
-package utils;
+package conexiones.clasesClienteConsola;
 
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -11,10 +10,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
-import conexiones.AtenderCliente;
-import conexiones.Cliente;
-import conexiones.EnviadorPregunta;
+import conexiones.clasesComunes.EnviadorPregunta;
 import dominio.Persona;
 import dominio.Pregunta;
 import dominio.Sala;
@@ -59,8 +55,9 @@ public class Empezar extends Thread{
             for(Persona p: clientesConectados.keySet()){
                 tablaPuntuaciones.put(p, 0);
             }
-
+            System.out.println(numPreg);
             for (int i = 0; i<numPreg; i++){
+                System.out.println(i);
                 ArrayList<Future<HashMap<Persona,Integer>>> resultados = new ArrayList<>();
                 CyclicBarrier barrera = new CyclicBarrier(numJugadores+1);
 				CountDownLatch recoger = new CountDownLatch(numJugadores);
@@ -103,11 +100,11 @@ public class Empezar extends Thread{
             e.printStackTrace();
 			pool.shutdown();
         }
-
+        teclado.close();
 	}
 
 	private static String escribirTablaPuntuaciones(HashMap<Persona, Integer> tablaPuntuaciones){
-        String mostrar ="Nombre                 Puntos       \n---------------------------------------\n";
+        String mostrar ="Nombre                 Puntos       \n--------------------------------------------\n";
         for(Persona p : tablaPuntuaciones.keySet()){
             mostrar = mostrar + p.getAlias() + "                       " + tablaPuntuaciones.get(p) + "    \n";
         }

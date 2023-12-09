@@ -1,5 +1,6 @@
-package conexiones;
+package conexiones.clasesClienteGrafico;
 
+import java.awt.Color;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 
 import dominio.Persona;
 import dominio.Pregunta;
@@ -25,8 +27,6 @@ import dominio.Respuesta;
 import dominio.Sala;
 import dominio.SocketCliente;
 import utils.CountDown;
-import utils.Empezar;
-import utils.Empezar2;
 
 public class Cliente2 {
     private Sala sala = null;
@@ -35,6 +35,8 @@ public class Cliente2 {
     private HashMap<Persona, SocketCliente> clientesConectados = new HashMap<>();
     private Respuesta respuestaJugador;
     private ArrayList<String> posiblesRespuestas;
+    private int puntosFinales=-1;
+    private boolean listo = false;
 
     public String crearSala(int opcion){
         String idSala="";
@@ -63,7 +65,7 @@ public class Cliente2 {
         sala.anadirPregunta(pregunta);       
     }
 
-    public void hostearSala(JTextArea textPuntuaciones, Empezar2 empezar){
+    public void hostearSala(JTextArea textPuntuaciones){//Empezar2 empezar){
         try(ServerSocket ss = new ServerSocket(this.localPort)){
             HashMap<Persona, Integer> tablaPuntuaciones = new HashMap<>();
             int i = 20;
@@ -75,11 +77,13 @@ public class Cliente2 {
                     ObjectInputStream inSocket = new ObjectInputStream(cliente.getInputStream());
 
                     SocketCliente socketCliente = new SocketCliente(cliente, inSocket, outSocket);
-                    if(!empezar.getListo()){
+                    System.out.println("Listo vale "+this.listo);//empezar.getListo());
+                    if(!this.listo){//!empezar.getListo()){
                         outSocket.writeBoolean(true);
                         outSocket.flush();
                         Persona p = (Persona) inSocket.readObject();
-                        textPuntuaciones.setText(textPuntuaciones + "\n" + p.getAlias());
+                        if(textPuntuaciones.getText().equals("Debe haber un jugador en la sala como mínimo")) textPuntuaciones.setText("");
+                        textPuntuaciones.setText(textPuntuaciones.getText() + "\n" + p.getAlias());
                         tablaPuntuaciones.put(p, 0);
                         clientesConectados.put(p, socketCliente);
                         outSocket.writeInt(sala.getPreguntas().size());
@@ -120,8 +124,11 @@ public class Cliente2 {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        ArrayList<Persona> devolver = new ArrayList<>();
-        devolver.add(personaHost); devolver.add(personaJugador);
+        ArrayList<Persona> devolver = null;
+        if(personaHost!=null && personaJugador!=null){
+            devolver = new ArrayList<>();
+            devolver.add(personaHost); devolver.add(personaJugador);
+        }
         return devolver;
         //if(personaHost!=null && personaJugador!=null) jugarEnSala(personaHost, personaJugador);
     }
@@ -132,6 +139,7 @@ public class Cliente2 {
             ObjectInputStream inSocket = new ObjectInputStream(s.getInputStream());){
             
             boolean conectado = inSocket.readBoolean();
+            System.out.println("Me he conectado correctamente: "+conectado);
             if(conectado) {
                 outSocket.writeObject(personaJugador);
                 outSocket.flush();
@@ -139,21 +147,29 @@ public class Cliente2 {
                 int numPreg = inSocket.readInt();
                 Pregunta pregunta;
                 Respuesta respuesta;
+                ArrayList<Color> coloresBotones= new ArrayList<>();
+                coloresBotones.add(new Color(41, 167, 241));
+                coloresBotones.add(new Color(255, 0, 0));
+                coloresBotones.add(new Color(255, 255, 0));
+                coloresBotones.add(new Color(0, 187, 94));
 
                 for (int i = 0; i<numPreg; i++){
                     pregunta = (Pregunta) inSocket.readObject();
-                    this.posiblesRespuestas = (ArrayList<String>) pregunta.getRespuestasDesordenadas();
+                    this.posiblesRespuestas = pregunta.getRespuestasDesordenadas();
                     for(int k = 0; k<posiblesRespuestas.size(); k++){
                         JButton boton = (JButton) panelBotonesRespuesta.getComponent(k);
+                        boton.setBackground(coloresBotones.get(k));
+                        boton.setEnabled(true);
                         boton.setText(this.posiblesRespuestas.get(k));
                     }
+                    JTextPane textPregunta = (JTextPane) panelPreguntaPuntos.getComponent(0);
+                    textPregunta.setText(pregunta.getPregunta());
 
                     Timer timer = new Timer();
                     CyclicBarrier barrera = new CyclicBarrier(2);
                     int segundos = 30;
                     Calendar init = Calendar.getInstance();
-                    //ResponderPregunta2 responder = new ResponderPregunta2(pregunta, panelPreguntaPuntos);
-                    //responder.start();
+                    
                     timer.scheduleAtFixedRate(new CountDown(segundos, timer, barrera, panelPreguntaPuntos), init.getTime(), 1000);
                     barrera.await();
                     respuesta = this.respuestaJugador;
@@ -167,8 +183,14 @@ public class Cliente2 {
                     JLabel lblPuntos = (JLabel) panelPreguntaPuntos.getComponent(1);
                     lblPuntos.setText("Puntos: " + puntos);
                 }
+                this.puntosFinales = puntos;
             }else{
-                System.out.println("La partida ya ha empezado");
+                JTextPane textPregunta = (JTextPane) panelPreguntaPuntos.getComponent(0);
+                textPregunta.setText("La partida ya ha comenzado");
+                for(int k = 0; k<4; k++){
+                    JButton boton = (JButton) panelBotonesRespuesta.getComponent(k);
+                    boton.setVisible(false);
+                }
             }
         }catch(IOException e){
             e.printStackTrace();
@@ -179,6 +201,7 @@ public class Cliente2 {
         } catch (BrokenBarrierException e) {
             e.printStackTrace();
         }
+        
     }
 
     public void setRespuestaJugador(int opcion){
@@ -201,4 +224,15 @@ public class Cliente2 {
         return null;
     }
 
+    public int getPuntosFinales(){
+        return this.puntosFinales;
+    }
+
+    public boolean getListo(){
+        return this.listo;
+    }
+
+    public void setListo(boolean listo){
+        this.listo = listo;
+    }
 }

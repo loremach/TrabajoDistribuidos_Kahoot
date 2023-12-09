@@ -1,6 +1,7 @@
 package dominio;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -63,11 +64,12 @@ public class Pregunta implements Serializable{
     }
     
 
-    public List<String> getRespuestasDesordenadas(){
+    public ArrayList<String> getRespuestasDesordenadas(){
         List<String> respuestas = Arrays.asList(respuestaCorrecta, respuestaIncA,
                                                 respuestaIncB, respuestaIncB);
 
         Collections.shuffle(respuestas);
-        return respuestas;
+        ArrayList<String> devolver = new ArrayList<>(respuestas);
+        return devolver;
     }
 }

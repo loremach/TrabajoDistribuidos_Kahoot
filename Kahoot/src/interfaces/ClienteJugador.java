@@ -13,7 +13,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
-import conexiones.Cliente2;
+import conexiones.clasesClienteGrafico.Cliente2;
 import dominio.Persona;
 import javax.swing.SwingConstants;
 import java.awt.SystemColor;
@@ -46,8 +46,6 @@ public class ClienteJugador extends JPanel {
 		
 		JPanel PanelBotonesRespuesta = new JPanel();
 		
-		cliente.jugarEnSala(personaHost, personaJugador, panelPreguntaPuntos, PanelBotonesRespuesta);
-		
 		GroupLayout gl_contentPane = new GroupLayout(this);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -66,43 +64,77 @@ public class ClienteJugador extends JPanel {
 		);
 		PanelBotonesRespuesta.setLayout(new GridLayout(2, 2, 0, 0));
 		
-		JButton btnRespuestaA = new JButton("New button");
-		btnRespuestaA.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cliente.setRespuestaJugador(1);
-			}
-		});
+		JButton btnRespuestaA = new JButton("");
+		btnRespuestaA.setFont(new Font("Kristen ITC", Font.PLAIN, 14));
+		btnRespuestaA.setEnabled(false);
 		btnRespuestaA.setBackground(new Color(41, 167, 241));
 		btnRespuestaA.setForeground(new Color(0, 0, 0));
 		PanelBotonesRespuesta.add(btnRespuestaA);
 		
-		JButton btnRespuestaB = new JButton("New button");
-		btnRespuestaB.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cliente.setRespuestaJugador(2);
-			}
-		});
+		JButton btnRespuestaB = new JButton("");
+		btnRespuestaB.setFont(new Font("Kristen ITC", Font.PLAIN, 14));
+		btnRespuestaB.setEnabled(false);
 		btnRespuestaB.setBackground(new Color(255, 0, 0));
 		PanelBotonesRespuesta.add(btnRespuestaB);
 		
-		JButton btnRespuestaC = new JButton("New button");
-		btnRespuestaC.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cliente.setRespuestaJugador(3);
-			}
-		});
+		JButton btnRespuestaC = new JButton("");
+		btnRespuestaC.setFont(new Font("Kristen ITC", Font.PLAIN, 14));
+		btnRespuestaC.setEnabled(false);
 		btnRespuestaC.setBackground(new Color(255, 255, 0));
 		PanelBotonesRespuesta.add(btnRespuestaC);
 		
-		JButton btnRespuestaD = new JButton("New button");
-		btnRespuestaD.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cliente.setRespuestaJugador(4);
-			}
-		});
+		JButton btnRespuestaD = new JButton("");
+		btnRespuestaD.setFont(new Font("Kristen ITC", Font.PLAIN, 14));
+		btnRespuestaD.setEnabled(false);
 		btnRespuestaD.setBackground(new Color(0, 187, 94));
 		PanelBotonesRespuesta.add(btnRespuestaD);
 		
+		//Listeners
+		btnRespuestaA.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cliente.setRespuestaJugador(1);
+				btnRespuestaA.setBackground(new Color(43, 139, 189));
+
+				btnRespuestaA.setEnabled(false);
+				btnRespuestaB.setEnabled(false);
+				btnRespuestaC.setEnabled(false);
+				btnRespuestaD.setEnabled(false);
+			}
+		});
+		btnRespuestaB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cliente.setRespuestaJugador(2);
+				btnRespuestaB.setBackground(new Color(197, 0, 0));
+
+				btnRespuestaA.setEnabled(false);
+				btnRespuestaB.setEnabled(false);
+				btnRespuestaC.setEnabled(false);
+				btnRespuestaD.setEnabled(false);
+			}
+		});
+		btnRespuestaC.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cliente.setRespuestaJugador(3);
+				btnRespuestaC.setBackground(new Color(255, 213, 0));
+
+				btnRespuestaA.setEnabled(false);
+				btnRespuestaB.setEnabled(false);
+				btnRespuestaC.setEnabled(false);
+				btnRespuestaD.setEnabled(false);
+			}
+		});
+		btnRespuestaD.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cliente.setRespuestaJugador(4);
+				btnRespuestaD.setBackground(new Color(0, 147, 34));
+
+				btnRespuestaA.setEnabled(false);
+				btnRespuestaB.setEnabled(false);
+				btnRespuestaC.setEnabled(false);
+				btnRespuestaD.setEnabled(false);
+			}
+		});
+
 		JLabel lblKahoot = new JLabel("Kahoot!");
 		lblKahoot.setForeground(new Color(0, 0, 160));
 		lblKahoot.setFont(new Font("Kristen ITC", Font.BOLD, 40));
@@ -124,6 +156,7 @@ public class ClienteJugador extends JPanel {
 		panelKahoot.setLayout(gl_panelKahoot);
 		
 		JTextPane textPregunta = new JTextPane();
+		textPregunta.setFont(new Font("Kristen ITC", Font.PLAIN, 14));
 		textPregunta.setBackground(SystemColor.menu);
 		
 		JLabel lblPuntos = new JLabel("Puntos: 0");
@@ -161,5 +194,13 @@ public class ClienteJugador extends JPanel {
 		);
 		panelPreguntaPuntos.setLayout(gl_panelPreguntaPuntos);
 		this.setLayout(gl_contentPane);
+
+		Thread jugar = new Thread(new Runnable(){
+			public void run(){
+				cliente.jugarEnSala(personaHost, personaJugador, panelPreguntaPuntos, PanelBotonesRespuesta);
+			}
+		});
+
+		jugar.start();
 	}
 }

@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.EmptyBorder;
 
-import conexiones.Cliente2;
+import conexiones.clasesClienteGrafico.Cliente2;
 
 public class Inicio extends JPanel {
 
@@ -59,6 +59,12 @@ public class Inicio extends JPanel {
 		
 		JButton btnSalir = new JButton("Salir");
 		btnSalir.setFont(new Font("Kristen ITC", Font.BOLD, 15));
+		btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ventanaPrincipal.dispose();
+			}
+		});
+
 		GroupLayout gl_contentPane = new GroupLayout(this);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)

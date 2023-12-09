@@ -1,4 +1,4 @@
-package conexiones;
+package conexiones.clasesComunes;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import conexiones.Cliente2;
+import conexiones.clasesClienteGrafico.Cliente2;
 import dominio.Persona;
 
 public class VentanaPrincipal extends JFrame {
@@ -36,14 +36,17 @@ public class VentanaPrincipal extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new CardLayout(0,0));
 		
-//		this.inicio = new Inicio(cliente, this);
-//		this.clienteEntrarSala = new ClienteEntrarSala(this.cliente, this);
-//		this.clienteHostConfig = new ClienteHostConfig(this.cliente, this);
-//		this.clienteHostJugando = new ClienteHostJugando(this.cliente, this);
-		
 		this.setVisible(true);
 	}
 	
+	public void empezar() {
+		contentPane.removeAll();
+		contentPane.add(new Inicio(this.cliente, this));
+		contentPane.repaint();
+		contentPane.revalidate();
+		this.setVisible(true);
+	}
+
 	public void cambiarAClienteHostConfig() {
 		contentPane.removeAll();
 		contentPane.add(new ClienteHostConfig(this.cliente, this));
@@ -64,14 +67,6 @@ public class VentanaPrincipal extends JFrame {
 		contentPane.add(new ClienteEntrarSala(this.cliente, this));
 		contentPane.repaint();
 		contentPane.revalidate();
-	}
-	
-	public void empezar() {
-		contentPane.removeAll();
-		contentPane.add(new Inicio(this.cliente, this));
-		contentPane.repaint();
-		contentPane.revalidate();
-		this.setVisible(true);
 	}
 	
 	public void cambiarAClienteJugador(Persona personaHost, Persona personaJugador){

@@ -9,8 +9,8 @@ import java.util.concurrent.*;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import conexiones.ResponderPregunta;
-import conexiones.ResponderPregunta2;
+import conexiones.clasesClienteConsola.ResponderPregunta;
+import conexiones.clasesClienteGrafico.ResponderPregunta2;
 
 public class CountDown extends TimerTask{
 
@@ -37,13 +37,19 @@ public class CountDown extends TimerTask{
 	}
 
 	public void run() {
-		System.out.println(this.seconds);
-		this.seconds--;
 		if(this.tiempo!=null){
 			this.tiempo.setText(String.valueOf(seconds));
+		}else{
+			System.out.println(this.seconds);
 		}
+		this.seconds--;
 		if (this.seconds == 0) {
 			try {
+				if(this.tiempo!=null){
+					this.tiempo.setText(String.valueOf(seconds));
+				}else{
+					System.out.println(this.seconds);
+				}
 				if(responder!=null) responder.interrupt();
 				barrera.await();
 				timer.cancel();

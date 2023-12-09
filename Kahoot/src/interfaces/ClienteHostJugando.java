@@ -18,13 +18,15 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
-import conexiones.AtenderCliente;
-import conexiones.Cliente2;
+import conexiones.clasesClienteConsola.Empezar;
+import conexiones.clasesClienteGrafico.Cliente2;
+import conexiones.clasesClienteGrafico.Empezar2;
+import conexiones.clasesComunes.AtenderCliente;
 import dominio.Persona;
 import dominio.Pregunta;
 import dominio.Sala;
-import utils.Empezar;
-import utils.Empezar2;
+
+import javax.swing.DropMode;
 
 public class ClienteHostJugando extends JPanel {
 
@@ -87,14 +89,14 @@ public class ClienteHostJugando extends JPanel {
 		);
 		
 		JLabel lblID = new JLabel("ID de la sala: "+cliente.getSala().getIdSala());
-		lblID.setFont(new Font("Kristen ITC", Font.PLAIN, 20));
+		lblID.setFont(new Font("Courier New", Font.BOLD, 24));
 		GroupLayout gl_panel_3 = new GroupLayout(panel_3);
 		gl_panel_3.setHorizontalGroup(
 			gl_panel_3.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_3.createSequentialGroup()
-					.addGap(190)
+				.addGroup(Alignment.TRAILING, gl_panel_3.createSequentialGroup()
+					.addContainerGap(125, Short.MAX_VALUE)
 					.addComponent(lblID)
-					.addContainerGap(258, Short.MAX_VALUE))
+					.addGap(119))
 		);
 		gl_panel_3.setVerticalGroup(
 			gl_panel_3.createParallelGroup(Alignment.LEADING)
@@ -110,6 +112,11 @@ public class ClienteHostJugando extends JPanel {
 		lblJugadoresConectados.setToolTipText("");
 
 		JTextArea textPuntuaciones = new JTextArea();
+		textPuntuaciones.setEditable(false);
+		textPuntuaciones.setColumns(1);
+		textPuntuaciones.setWrapStyleWord(true);
+		textPuntuaciones.setLineWrap(true);
+		textPuntuaciones.setFont(new Font("Kristen ITC", Font.PLAIN, 14));
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup().addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
@@ -124,12 +131,29 @@ public class ClienteHostJugando extends JPanel {
 						.addContainerGap()));
 		panel_1.setLayout(gl_panel_1);
 
-		JButton btnEmpezar = new JButton("Empezar");
+		Thread hiloHostear = new Thread(new Runnable() {
+			public void run(){
+				cliente.hostearSala(textPuntuaciones);//empezar);
+			}
+		});
 
-		Empezar2 empezar = new Empezar2(cliente.getClientesConectados(), cliente.getSala(), textPuntuaciones);
+		hiloHostear.start();
+
+		JButton btnEmpezar = new JButton("Empezar");
+		//Empezar2 empezar = new Empezar2(cliente.getClientesConectados(), cliente.getSala(), textPuntuaciones, listo);
+		Empezar2 empezar = new Empezar2(cliente, textPuntuaciones);
 		btnEmpezar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-            	empezar.start();
+				if(cliente.getClientesConectados().size()>0){
+					empezar.start();
+					lblJugadoresConectados.setText("Tabla de puntuaciones:");
+					textPuntuaciones.setText("");
+					btnEmpezar.setEnabled(false);
+					btnEmpezar.setVisible(false);
+				}else{
+					textPuntuaciones.setText("Debe haber un jugador en la sala como mínimo");
+				}
+            	
 			}
 		});
 		btnEmpezar.setFont(new Font("Kristen ITC", Font.BOLD, 18));
@@ -146,14 +170,6 @@ public class ClienteHostJugando extends JPanel {
 		panel.setLayout(gl_panel);
 
 		this.setLayout(gl_contentPane);
-
-		Thread hiloHostear = new Thread(new Runnable() {
-			public void run(){
-				cliente.hostearSala(textPuntuaciones, empezar);
-			}
-		});
-
-		hiloHostear.start();
 	}
 	
 	public String mostrarPuntuaciones() {
