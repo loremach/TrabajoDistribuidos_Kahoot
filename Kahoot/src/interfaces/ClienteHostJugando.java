@@ -5,9 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -18,28 +16,15 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
-import conexiones.clasesClienteConsola.Empezar;
 import conexiones.clasesClienteGrafico.Cliente2;
 import conexiones.clasesClienteGrafico.Empezar2;
-import conexiones.clasesComunes.AtenderCliente;
 import dominio.Persona;
-import dominio.Pregunta;
-import dominio.Sala;
-
-import javax.swing.DropMode;
 
 public class ClienteHostJugando extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private Cliente2 cliente;
 	private VentanaPrincipal ventanaPrincipal;
-	
-	private static Sala sala = null;
-	private List<Pregunta> preguntasSala = new ArrayList<>();
-	private static int localPort = 0;
-	private static HashMap<String, Persona> salas;
-	private static boolean listo = false;
-	private static List<AtenderCliente> listaEjecuciones = new ArrayList<>();
 	private HashMap<Persona, Integer> tablaPuntuaciones;
 
 
@@ -94,9 +79,9 @@ public class ClienteHostJugando extends JPanel {
 		gl_panel_3.setHorizontalGroup(
 			gl_panel_3.createParallelGroup(Alignment.LEADING)
 				.addGroup(Alignment.TRAILING, gl_panel_3.createSequentialGroup()
-					.addContainerGap(125, Short.MAX_VALUE)
+					.addContainerGap(123, Short.MAX_VALUE)
 					.addComponent(lblID)
-					.addGap(119))
+					.addGap(121))
 		);
 		gl_panel_3.setVerticalGroup(
 			gl_panel_3.createParallelGroup(Alignment.LEADING)
@@ -118,29 +103,38 @@ public class ClienteHostJugando extends JPanel {
 		textPuntuaciones.setLineWrap(true);
 		textPuntuaciones.setFont(new Font("Kristen ITC", Font.PLAIN, 14));
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-		gl_panel_1.setHorizontalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_1.createSequentialGroup().addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_1.createSequentialGroup().addGap(197).addComponent(lblJugadoresConectados))
-						.addGroup(gl_panel_1.createSequentialGroup().addContainerGap().addComponent(textPuntuaciones,
-								GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)))
-						.addContainerGap()));
-		gl_panel_1.setVerticalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_1.createSequentialGroup().addGap(5).addComponent(lblJugadoresConectados)
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addComponent(textPuntuaciones, GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
-						.addContainerGap()));
+		gl_panel_1.setHorizontalGroup(
+			gl_panel_1.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addContainerGap(154, Short.MAX_VALUE)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
+							.addComponent(textPuntuaciones, GroupLayout.PREFERRED_SIZE, 286, GroupLayout.PREFERRED_SIZE)
+							.addGap(150))
+						.addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
+							.addComponent(lblJugadoresConectados)
+							.addGap(195))))
+		);
+		gl_panel_1.setVerticalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addGap(5)
+					.addComponent(lblJugadoresConectados)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(textPuntuaciones, GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
+					.addContainerGap())
+		);
 		panel_1.setLayout(gl_panel_1);
 
 		Thread hiloHostear = new Thread(new Runnable() {
 			public void run(){
-				cliente.hostearSala(textPuntuaciones);//empezar);
+				cliente.hostearSala(textPuntuaciones);
 			}
 		});
 
 		hiloHostear.start();
 
 		JButton btnEmpezar = new JButton("Empezar");
-		//Empezar2 empezar = new Empezar2(cliente.getClientesConectados(), cliente.getSala(), textPuntuaciones, listo);
 		Empezar2 empezar = new Empezar2(cliente, textPuntuaciones);
 		btnEmpezar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -160,26 +154,25 @@ public class ClienteHostJugando extends JPanel {
 		panel_2.add(btnEmpezar);
 
 		JLabel lblKahoot = new JLabel("Kahoot!");
-		lblKahoot.setForeground(new Color(0, 0, 160));
-		lblKahoot.setFont(new Font("Kristen ITC", Font.BOLD, 40));
+		lblKahoot.setForeground(new Color(0, 0, 128));
+		lblKahoot.setFont(new Font("Kristen ITC", Font.BOLD, 42));
 		GroupLayout gl_panel = new GroupLayout(panel);
-		gl_panel.setHorizontalGroup(gl_panel.createParallelGroup(Alignment.LEADING).addGroup(gl_panel
-				.createSequentialGroup().addGap(198).addComponent(lblKahoot).addContainerGap(198, Short.MAX_VALUE)));
-		gl_panel.setVerticalGroup(gl_panel.createParallelGroup(Alignment.LEADING).addGroup(Alignment.TRAILING, gl_panel
-				.createSequentialGroup().addContainerGap(32, Short.MAX_VALUE).addComponent(lblKahoot).addGap(25)));
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+					.addContainerGap(212, Short.MAX_VALUE)
+					.addComponent(lblKahoot)
+					.addGap(200))
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap(32, Short.MAX_VALUE)
+					.addComponent(lblKahoot)
+					.addGap(25))
+		);
 		panel.setLayout(gl_panel);
 
 		this.setLayout(gl_contentPane);
-	}
-	
-	public String mostrarPuntuaciones() {
-		String mostrar = "";
-		if (tablaPuntuaciones != null) {
-			for (Persona p : tablaPuntuaciones.keySet()) {
-				mostrar = mostrar + p.getIp() + ": " + tablaPuntuaciones.get(p) + " puntos";
-			}
-		}
-		return mostrar;
-	}
-	
+	}	
 }

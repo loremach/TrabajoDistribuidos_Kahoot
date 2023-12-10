@@ -1,7 +1,5 @@
 package utils;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
-
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.*;
@@ -10,7 +8,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import conexiones.clasesClienteConsola.ResponderPregunta;
-import conexiones.clasesClienteGrafico.ResponderPregunta2;
 
 public class CountDown extends TimerTask{
 

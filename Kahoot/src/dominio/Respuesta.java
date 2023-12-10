@@ -1,7 +1,6 @@
 package dominio;
 
 import java.io.Serializable;
-import java.security.Timestamp;
 import java.util.Calendar;
 
 public class Respuesta implements Serializable{

@@ -1,11 +1,9 @@
 package Interfaces;
 
 import java.awt.CardLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 import conexiones.clasesClienteGrafico.Cliente2;
 import dominio.Persona;
@@ -15,10 +13,6 @@ public class VentanaPrincipal extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;	
 	private Cliente2 cliente;
-//	private JPanel clienteHostConfig;
-//	private JPanel inicio;
-//	private JPanel clienteHostJugando;
-//	private JPanel clienteEntrarSala;
 
 	/**
 	 * Create the frame.
@@ -59,7 +53,6 @@ public class VentanaPrincipal extends JFrame {
 		contentPane.add(new ClienteHostJugando(this.cliente, this));
 		contentPane.repaint();
 		contentPane.revalidate();
-		//((ClienteHostJugando) this.clienteHostJugando).empezarAHostear();
 	}
 	
 	public void cambiarAClienteEntrarSala() {

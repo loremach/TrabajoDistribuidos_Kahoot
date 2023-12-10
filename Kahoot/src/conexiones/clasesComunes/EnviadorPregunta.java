@@ -30,6 +30,13 @@ public class EnviadorPregunta implements Callable<HashMap<Persona, Integer>>{
         this.recoger = recoger;
     }
 
+    /**
+     * Realiza una solicitud al cliente para enviar una pregunta, recibir su respuesta
+     * y calcular los puntos obtenidos, todo en un contexto de ejecución concurrente.
+     *
+     * @return Un HashMap que contiene la Persona y la cantidad de puntos obtenidos.
+     * @throws Exception Si ocurre un error durante la ejecución del hilo.
+     */
     @Override
     public HashMap<Persona, Integer> call() throws Exception {
         barrera.await();

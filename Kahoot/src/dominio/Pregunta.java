@@ -33,7 +33,7 @@ public class Pregunta implements Serializable{
     @Override
     public String toString(){
         List<String> respuestas = Arrays.asList(respuestaCorrecta, respuestaIncA,
-                                                respuestaIncB, respuestaIncB);
+                                                respuestaIncB, respuestaIncC);
         Collections.shuffle(respuestas);
         this.respuestas = respuestas;
         return pregunta + "\n" + "a) " + respuestas.get(0) + "\n" + "b) " + respuestas.get(1) + 
@@ -66,7 +66,7 @@ public class Pregunta implements Serializable{
 
     public ArrayList<String> getRespuestasDesordenadas(){
         List<String> respuestas = Arrays.asList(respuestaCorrecta, respuestaIncA,
-                                                respuestaIncB, respuestaIncB);
+                                                respuestaIncB, respuestaIncC);
 
         Collections.shuffle(respuestas);
         ArrayList<String> devolver = new ArrayList<>(respuestas);

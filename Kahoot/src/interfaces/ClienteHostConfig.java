@@ -4,9 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -20,7 +17,6 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
 import conexiones.clasesClienteGrafico.Cliente2;
-import dominio.Persona;
 import dominio.Pregunta;
 
 public class ClienteHostConfig extends JPanel {
@@ -28,10 +24,7 @@ public class ClienteHostConfig extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Cliente2 cliente;
 	private VentanaPrincipal ventanaPrincipal;
-    private List<Pregunta> preguntasSala = new ArrayList<>();
 
-    private static HashMap<String, Persona> salas;
-    private static boolean listo = false;
     private JTextField textRespuestaCorrecta;
     private JTextField textRespuestaFalsa1;
     private JTextField textRespuestaFalsa2;
@@ -77,8 +70,8 @@ public class ClienteHostConfig extends JPanel {
 		);
 		
 		JLabel lblNewLabel = new JLabel("Kahoot!");
-		lblNewLabel.setForeground(new Color(0, 0, 160));
-		lblNewLabel.setFont(new Font("Kristen ITC", Font.BOLD, 40));
+		lblNewLabel.setForeground(new Color(0, 0, 128));
+		lblNewLabel.setFont(new Font("Kristen ITC", Font.BOLD, 42));
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)

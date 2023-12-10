@@ -1,8 +1,6 @@
 package conexiones.clasesClienteGrafico;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,6 +22,12 @@ public class ResponderPregunta2 extends Thread{
         this.respuestas = (ArrayList<String>) pregunta.getRespuestasDesordenadas();
     }
 
+    /**
+     * Ejecuta la espera de una respuesta a una pregunta mostrada en un JLabel.
+     * Espera hasta que se proporcione una respuesta válida.
+     * 
+     * @param pregunta El objeto Pregunta que contiene la pregunta a mostrar.
+     */
     public void run(){
         JLabel lblPregunta = (JLabel) this.panelPreguntaPuntos.getComponent(0);
         lblPregunta.setText(pregunta.getPregunta());

@@ -42,8 +42,8 @@ public class Inicio extends JPanel {
 		});
 		
 		JLabel lblBienvenido = new JLabel("¡Bienvenido a Kahoot!");
-		lblBienvenido.setForeground(new Color(0, 0, 160));
-		lblBienvenido.setFont(new Font("Kristen ITC", Font.BOLD, 32));
+		lblBienvenido.setForeground(new Color(0, 0, 128));
+		lblBienvenido.setFont(new Font("Kristen ITC", Font.BOLD, 34));
 		lblBienvenido.setToolTipText("");
 		
 		JLabel lblNewLabel_1 = new JLabel("¿Qué quieres hacer?");
@@ -69,7 +69,7 @@ public class Inicio extends JPanel {
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap(107, Short.MAX_VALUE)
+					.addContainerGap(101, Short.MAX_VALUE)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
@@ -79,8 +79,8 @@ public class Inicio extends JPanel {
 								.addComponent(btnSalir, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 221, GroupLayout.PREFERRED_SIZE))
 							.addGap(173))
 						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-							.addComponent(lblBienvenido, GroupLayout.PREFERRED_SIZE, 372, GroupLayout.PREFERRED_SIZE)
-							.addGap(95))))
+							.addComponent(lblBienvenido, GroupLayout.PREFERRED_SIZE, 397, GroupLayout.PREFERRED_SIZE)
+							.addGap(92))))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -95,7 +95,7 @@ public class Inicio extends JPanel {
 					.addComponent(btnUnirse, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
 					.addGap(57)
 					.addComponent(btnSalir, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(132, Short.MAX_VALUE))
+					.addContainerGap(171, Short.MAX_VALUE))
 		);
 		
 		this.setLayout(gl_contentPane);

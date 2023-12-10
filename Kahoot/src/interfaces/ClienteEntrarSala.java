@@ -101,18 +101,18 @@ public class ClienteEntrarSala extends JPanel {
 		lblNewLabel_1.setFont(new Font("Kristen ITC", Font.BOLD, 42));
 		GroupLayout gl_panelKahoot = new GroupLayout(panelKahoot);
 		gl_panelKahoot.setHorizontalGroup(
-			gl_panelKahoot.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_panelKahoot.createSequentialGroup()
-					.addContainerGap(187, Short.MAX_VALUE)
+			gl_panelKahoot.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, gl_panelKahoot.createSequentialGroup()
+					.addGap(184)
 					.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 198, GroupLayout.PREFERRED_SIZE)
-					.addGap(185))
+					.addContainerGap(188, Short.MAX_VALUE))
 		);
 		gl_panelKahoot.setVerticalGroup(
-			gl_panelKahoot.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_panelKahoot.createSequentialGroup()
-					.addContainerGap(64, Short.MAX_VALUE)
+			gl_panelKahoot.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panelKahoot.createSequentialGroup()
+					.addContainerGap(65, Short.MAX_VALUE)
 					.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
-					.addGap(58))
+					.addGap(57))
 		);
 		panelKahoot.setLayout(gl_panelKahoot);
 		

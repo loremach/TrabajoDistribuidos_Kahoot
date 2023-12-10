@@ -37,17 +37,24 @@ public class Servidor {
 		}
 	}
 
+	/**
+	 * Atiende la petición de un cliente en función de la opción proporcionada.
+	 * 
+	 * @param cliente El socket del cliente que realiza la petición.
+	 */
 	private static void atenderPeticion(Socket cliente) {
 		try (DataInputStream inSocket = new DataInputStream(cliente.getInputStream());
 				ObjectOutputStream outSocket = new ObjectOutputStream(cliente.getOutputStream());) {
+			// Lee la opción proporcionada por el cliente
 			int opcion = inSocket.readInt();
 			switch (opcion) {
 			case 1:
+				// Si el cliente no está asociado a ninguna sala, crea una nueva y le asigna un ID
 				Persona p = new Persona(cliente.getInetAddress().getHostAddress(), cliente.getPort());
 				if (!salas.containsValue(p)) {
 					String id = "0";
 					do {
-						id = generarIdAleatorio();
+						id = generarIdAleatorio(); // Genera un ID aleatorio único
 					} while (salas.containsKey(id));
 					salas.put(id, p);
 					outSocket.writeBytes("Has creado la sala.\n");
@@ -55,11 +62,13 @@ public class Servidor {
 					outSocket.writeBytes(id);
 					outSocket.flush();
 				} else {
+					// Si el cliente ya tiene una sala asociada, notifica al cliente
 					outSocket.writeBytes("Ya posees una sala.\n");
 					outSocket.flush();
 				}
 				break;
 			case 2:
+				// Envia al cliente la información de todas las salas disponibles
 				outSocket.writeObject(salas);
 				outSocket.flush();
 				break;

@@ -4,7 +4,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -12,7 +11,6 @@ import java.util.Scanner;
 import java.util.Timer;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
-
 import conexiones.clasesClienteConsola.Empezar;
 import conexiones.clasesClienteConsola.HostearSala;
 import conexiones.clasesClienteConsola.ResponderPregunta;
@@ -44,7 +42,6 @@ public class ClienteConsola {
                 crearSala(opcion);
                 anadirPreguntas(teclado);
                 hostearSala(sala);
-                System.out.println("HE PASADO POR AQUI QUE ES EL FINAL");
                 break;
             case 2:
                 conectarConSala(teclado, opcion);
@@ -54,10 +51,14 @@ public class ClienteConsola {
                 return;
         }
         teclado.close();
-        System.out.println("YA NO HAY MAS");
         return;
     }
 
+    /**
+     * Crea una sala con el servidor.
+     * 
+     * @param opcion El número de opción para que el servidor cree una sala.
+     */
     private static void crearSala(int opcion){
         try(Socket cliente = new Socket("localhost", 8000);
             ObjectInputStream inSocket = new ObjectInputStream(cliente.getInputStream());
@@ -78,6 +79,11 @@ public class ClienteConsola {
             }
     }
 
+    /**
+     * Método para agregar preguntas a una sala.
+     * 
+     * @param teclado Scanner utilizado para la entrada de datos.
+     */
     public static void anadirPreguntas(Scanner teclado){
         String seguir;
         String pregunta; String resCorrecta; String resInc1; String resInc2; String resInc3;
@@ -107,6 +113,11 @@ public class ClienteConsola {
         } while(otraPreg);     
     }
 
+    /**
+     * Inicia el proceso de alojamiento y gestión de una sala de juego.
+     * 
+     * @param sala La instancia de la Sala que se va a alojar.
+     */
     private static void hostearSala(Sala sala){
         try{
             HashMap<Persona, Integer> tablaPuntuaciones = new HashMap<>();
@@ -116,12 +127,17 @@ public class ClienteConsola {
             empezar.start();
             empezar.join();
             hostear.interrupt();
-            System.out.println("HE PASADO POR AQUI");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Establece la conexión con una sala de juego especificada por su ID y permite unirse como jugador.
+     * 
+     * @param teclado El objeto Scanner para entrada de datos.
+     * @param opcion El número de opción para realizar la operación de unirse a una sala con el servidor.
+     */
     private static void conectarConSala(Scanner teclado, int opcion){
         Persona personaHost = null;
         Persona personaJugador = null;
@@ -137,8 +153,6 @@ public class ClienteConsola {
             String idSala = teclado.nextLine();
             if(salas.containsKey(idSala)){
                 personaHost = salas.get(idSala);
-                System.out.println("Puerto: "+personaHost.getPuerto());
-
                 System.out.println("Introduce tu alias:");
                 String alias = teclado.nextLine();
                 personaJugador = new Persona(cliente.getInetAddress().getHostAddress(), cliente.getLocalPort(), alias);
@@ -153,6 +167,12 @@ public class ClienteConsola {
         if(personaHost!=null && personaJugador!=null) jugarEnSala(personaHost, personaJugador);
     }
 
+    /**
+     * Permite que un jugador se una a una sala y participe en el juego con el anfitrión.
+     * 
+     * @param personaHost El objeto Persona del anfitrión de la sala.
+     * @param personaJugador El objeto Persona del jugador que se une a la sala.
+     */
     private static void jugarEnSala(Persona personaHost, Persona personaJugador){
         try(Socket s = new Socket(personaHost.getIp(), personaHost.getPuerto());
             ObjectOutputStream outSocket = new ObjectOutputStream(s.getOutputStream());

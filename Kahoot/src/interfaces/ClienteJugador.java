@@ -65,26 +65,26 @@ public class ClienteJugador extends JPanel {
 		PanelBotonesRespuesta.setLayout(new GridLayout(2, 2, 0, 0));
 		
 		JButton btnRespuestaA = new JButton("");
-		btnRespuestaA.setFont(new Font("Kristen ITC", Font.PLAIN, 14));
+		btnRespuestaA.setFont(new Font("Kristen ITC", Font.BOLD, 16));
 		btnRespuestaA.setEnabled(false);
 		btnRespuestaA.setBackground(new Color(41, 167, 241));
 		btnRespuestaA.setForeground(new Color(0, 0, 0));
 		PanelBotonesRespuesta.add(btnRespuestaA);
 		
 		JButton btnRespuestaB = new JButton("");
-		btnRespuestaB.setFont(new Font("Kristen ITC", Font.PLAIN, 14));
+		btnRespuestaB.setFont(new Font("Kristen ITC", Font.BOLD, 16));
 		btnRespuestaB.setEnabled(false);
 		btnRespuestaB.setBackground(new Color(255, 0, 0));
 		PanelBotonesRespuesta.add(btnRespuestaB);
 		
 		JButton btnRespuestaC = new JButton("");
-		btnRespuestaC.setFont(new Font("Kristen ITC", Font.PLAIN, 14));
+		btnRespuestaC.setFont(new Font("Kristen ITC", Font.BOLD, 16));
 		btnRespuestaC.setEnabled(false);
 		btnRespuestaC.setBackground(new Color(255, 255, 0));
 		PanelBotonesRespuesta.add(btnRespuestaC);
 		
 		JButton btnRespuestaD = new JButton("");
-		btnRespuestaD.setFont(new Font("Kristen ITC", Font.PLAIN, 14));
+		btnRespuestaD.setFont(new Font("Kristen ITC", Font.BOLD, 16));
 		btnRespuestaD.setEnabled(false);
 		btnRespuestaD.setBackground(new Color(0, 187, 94));
 		PanelBotonesRespuesta.add(btnRespuestaD);
@@ -136,15 +136,15 @@ public class ClienteJugador extends JPanel {
 		});
 
 		JLabel lblKahoot = new JLabel("Kahoot!");
-		lblKahoot.setForeground(new Color(0, 0, 160));
-		lblKahoot.setFont(new Font("Kristen ITC", Font.BOLD, 40));
+		lblKahoot.setForeground(new Color(0, 0, 128));
+		lblKahoot.setFont(new Font("Kristen ITC", Font.BOLD, 42));
 		GroupLayout gl_panelKahoot = new GroupLayout(panelKahoot);
 		gl_panelKahoot.setHorizontalGroup(
 			gl_panelKahoot.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelKahoot.createSequentialGroup()
-					.addGap(202)
+					.addGap(209)
 					.addComponent(lblKahoot)
-					.addContainerGap(204, Short.MAX_VALUE))
+					.addContainerGap(213, Short.MAX_VALUE))
 		);
 		gl_panelKahoot.setVerticalGroup(
 			gl_panelKahoot.createParallelGroup(Alignment.LEADING)
