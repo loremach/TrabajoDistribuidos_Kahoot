@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
-import utils.CountDown;
+import utils.Countdown;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -199,10 +199,10 @@ public class Cliente2 {
                     // Configuración del temporizador para la pregunta
                     Timer timer = new Timer();
                     CyclicBarrier barrera = new CyclicBarrier(2);
-                    int segundos = 30;
+                    int segundos = 20;
                     Calendar init = Calendar.getInstance();
                     
-                    timer.scheduleAtFixedRate(new CountDown(segundos, timer, barrera, panelPreguntaPuntos), init.getTime(), 1000);
+                    timer.scheduleAtFixedRate(new Countdown(segundos, timer, barrera, panelPreguntaPuntos), init.getTime(), 1000);
                     barrera.await();
                     if(this.respuestaJugador == null){
                         respuesta = new Respuesta();

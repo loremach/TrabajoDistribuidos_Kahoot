@@ -51,7 +51,7 @@ public class EnviadorPregunta implements Callable<HashMap<Persona, Integer>>{
         Respuesta respuesta = (Respuesta) inSocket.readObject();
         if(!respuesta.getRespuesta().equals("")){
             if(pregunta.esCorrecta(respuesta.getRespuesta())){
-                puntos = Math.round(30 - (respuesta.getTiempoRespuesta().getTimeInMillis()-init.getTimeInMillis())/1000);
+                puntos = Math.round(20 - (respuesta.getTiempoRespuesta().getTimeInMillis()-init.getTimeInMillis())/1000);
             }
         }
 

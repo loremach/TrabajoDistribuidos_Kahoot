@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 
 import conexiones.clasesClienteConsola.ResponderPregunta;
 
-public class CountDown extends TimerTask{
+public class Countdown extends TimerTask{
 
 	private int seconds;
 	private Timer timer;
@@ -17,7 +17,7 @@ public class CountDown extends TimerTask{
 	private CyclicBarrier barrera;
 	private JLabel tiempo;
 
-	public CountDown(int sec, Timer t, ResponderPregunta responder, CyclicBarrier barrera){
+	public Countdown(int sec, Timer t, ResponderPregunta responder, CyclicBarrier barrera){
 		this.seconds = sec;
 		this.timer = t;
 		this.responder = responder;
@@ -25,7 +25,7 @@ public class CountDown extends TimerTask{
 		this.tiempo = null;
 	}
 
-	public CountDown(int sec, Timer t, CyclicBarrier barrera, JPanel panelPreguntaPuntos){
+	public Countdown(int sec, Timer t, CyclicBarrier barrera, JPanel panelPreguntaPuntos){
 		this.seconds = sec;
 		this.timer = t;
 		this.responder = null;

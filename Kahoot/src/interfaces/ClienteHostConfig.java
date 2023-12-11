@@ -1,4 +1,4 @@
-package Interfaces;
+package interfaces;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -93,6 +93,8 @@ public class ClienteHostConfig extends JPanel {
 		lblPregunta.setFont(new Font("Kristen ITC", Font.BOLD, 15));
 		
 		JTextArea textPregunta = new JTextArea();
+		textPregunta.setWrapStyleWord(true);
+		textPregunta.setLineWrap(true);
 		textPregunta.setFont(new Font("Kristen ITC", Font.PLAIN, 14));
 		textPregunta.setRows(8);
 		

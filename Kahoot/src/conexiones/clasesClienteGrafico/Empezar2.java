@@ -76,7 +76,7 @@ public class Empezar2 extends Thread{
                 if(i==numPreg-1){
                     Persona ganador = calcularGanador(tablaPuntuaciones);
                     this.textPuntuaciones.setText(escribirTablaPuntuaciones(tablaPuntuaciones) + 
-                    "\n\n" + "¡Ha ganado " + ganador.getAlias() + " con " + tablaPuntuaciones.get(ganador) + " puntos!");  
+                    "\n\n       " + "¡Ha ganado " + ganador.getAlias() + " con " + tablaPuntuaciones.get(ganador) + " puntos!");  
                 }else{
                     this.textPuntuaciones.setText(escribirTablaPuntuaciones(tablaPuntuaciones));
                 }

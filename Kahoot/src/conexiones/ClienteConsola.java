@@ -19,7 +19,7 @@ import dominio.Pregunta;
 import dominio.Respuesta;
 import dominio.Sala;
 import dominio.SocketCliente;
-import utils.CountDown;
+import utils.Countdown;
 
 public class ClienteConsola {
     private static Sala sala = null;
@@ -193,11 +193,11 @@ public class ClienteConsola {
                     pregunta = (Pregunta) inSocket.readObject();
                     Timer timer = new Timer();
                     CyclicBarrier barrera = new CyclicBarrier(2);
-                    int segundos = 30;
+                    int segundos = 20;
                     Calendar init = Calendar.getInstance();
                     ResponderPregunta responder = new ResponderPregunta(pregunta);
                     responder.start();
-                    timer.scheduleAtFixedRate(new CountDown(segundos, timer, responder, barrera), init.getTime(), 1000);
+                    timer.scheduleAtFixedRate(new Countdown(segundos, timer, responder, barrera), init.getTime(), 1000);
 
                     barrera.await();
                     respuesta = responder.getRespuesta();

@@ -1,0 +1,15 @@
+¿Qué método se utiliza para aceptar conexiones entrantes en un servidor TCP utilizando sockets?
+
+accept()
+connect()
+send()
+listen()
+
+¿Qué día es hoy?
+11
+12
+14
+10
+
+
+

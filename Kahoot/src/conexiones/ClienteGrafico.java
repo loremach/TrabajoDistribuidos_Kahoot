@@ -1,7 +1,7 @@
 package conexiones;
 
 import javax.swing.JFrame;
-import Interfaces.VentanaPrincipal;
+import interfaces.VentanaPrincipal;
 import conexiones.clasesClienteGrafico.Cliente2;
 
 

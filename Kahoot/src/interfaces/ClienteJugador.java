@@ -1,4 +1,4 @@
-package Interfaces;
+package interfaces;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -162,7 +162,7 @@ public class ClienteJugador extends JPanel {
 		JLabel lblPuntos = new JLabel("Puntos: 0");
 		lblPuntos.setFont(new Font("Kristen ITC", Font.PLAIN, 20));
 		
-		JLabel lblTiempo = new JLabel("30");
+		JLabel lblTiempo = new JLabel("20");
 		lblTiempo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTiempo.setForeground(new Color(255, 0, 0));
 		lblTiempo.setFont(new Font("Kristen ITC", Font.BOLD, 26));
